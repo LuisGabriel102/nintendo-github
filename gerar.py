@@ -264,7 +264,7 @@ PAG = """<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <div class="pular"><input id="q" type="search" placeholder="🔎 Buscar assunto ou nome — ex.: catálogo, jogos piratas ({ph})" autocomplete="off" aria-label="Buscar"><div class="pular-trilho">{nav}</div></div>
 {corpo}<p id="nada" hidden>Nada encontrado.</p>
 </div>
-<footer>Levantamento de 26/11/2026 · estrelas do GitHub nessa data · <a href="#" onclick="scrollTo(0,0);return false">↑ topo</a></footer>
+<footer><b>Site de fã, não oficial.</b> Não tem ligação com a Nintendo, não vende nada, não pede login nem dados. Projetos de pirataria e golpe aparecem sem link, só para informar.<br>Levantamento de 26/11/2026 · estrelas do GitHub nessa data · <a href="#" onclick="scrollTo(0,0);return false">↑ topo</a></footer>
 <script>{js}</script><script>{tjs}</script></body></html>"""
 
 open(os.path.join(AQUI, 'index.html'), 'w', encoding='utf-8').write(
