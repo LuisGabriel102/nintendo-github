@@ -122,7 +122,7 @@
   tela.className = "t-tela"; tela.hidden = true;
   tela.innerHTML = '<div class="t-col">' +
     '<div class="t-topo"><h2>🃏 Modo Tinder</h2><div class="t-conta"></div><button class="t-x" data-a="lista" title="Guardados">⭐</button><button class="t-x" data-a="fechar" title="Fechar">✕</button></div>' +
-    '<div class="t-filtros"><select data-f="fonte"><option value="guia">Guia explicado (PT)</option><option value="lista">Lista completa (2 mil+)</option></select>' +
+    '<div class="t-filtros"><select data-f="fonte"><option value="guia">Guia explicado (PT)</option><option value="lista">Lista completa (4,6 mil+)</option></select>' +
     '<select data-f="grupo"><option value="">Todos os consoles</option></select>' +
     '<button data-f="rec" aria-pressed="false">Só recomendados</button><button data-f="vistos" aria-pressed="false">Rever pulados</button></div>' +
     '<div class="t-palco"></div>' +

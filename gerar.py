@@ -269,7 +269,7 @@ PAG = """<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 
 open(os.path.join(AQUI, 'index.html'), 'w', encoding='utf-8').write(
     PAG.format(tit='Nintendo no GitHub — guia explicado', css=CSS, nav=nav, corpo=corpo, js=JS, tjs=TJS, ph='nome ou assunto',
-               h1='Nintendo no GitHub', sub=f'{TOTAL} projetos explicados em português, com exemplos e recomendações · mais de 2 mil na lista completa'))
+               h1='Nintendo no GitHub', sub=f'{TOTAL} projetos explicados em português, com exemplos e recomendações · mais de 4,6 mil na lista completa · inclui riscos, pirataria e golpes'))
 
 # ---------- pirataria x golpe x vírus ----------
 TIPO_NOME = {'pir': '🏴‍☠️ Pirataria', 'gol': '🎣 Golpe', 'mal': '🦠 Vírus (malware)'}
@@ -568,6 +568,11 @@ if REPOS:
         if r['n'].lower() in ja: continue
         oc = 0 if r.get('k') else 1
         mo = (MOT.get(r['n'].lower()) if oc else RIS.get(r['n'].lower())) or r
+        if not oc and (mo.get('tipo_risco') or '') in ('Golpe / malware', 'Malware'):
+            # visível com sinal de isca de vírus: oculta por precaução, como suspeito
+            mo = dict(mo, cat='Malware disfarçado', tipo_risco='Malware',
+                      m='Tem sinais de isca de vírus; ocultado por precaução até ser verificado.')
+            oc = 1
         cat = (mo.get('cat') or '') if oc else ''
         perigo = 1 if (oc and cat in PIRC) else 0
         tr = mo.get('tipo_risco') or ''
@@ -576,7 +581,10 @@ if REPOS:
                       oc, (mo.get('m') or '') if oc else '', cat,
                       (mo.get('risco') or '') if (oc or tr not in ('', 'Nenhum')) else '',
                       tr if (oc or tr not in ('', 'Nenhum')) else '', perigo,
-                      r['n'].split('/')[-1] if perigo else '', 0, ''])
+                      r['n'].split('/')[-1] if perigo else '',
+                      1 if (perigo and (cat == 'Malware disfarçado' or tr == 'Malware')) else 0,
+                      'Marcado só pelo padrão de isca (título de propaganda, link externo, sem código). Não dá para confirmar que contém vírus sem analisar o arquivo.'
+                      if (perigo and (cat == 'Malware disfarçado' or tr == 'Malware')) else ''])
     for x in itens:
         t = tipo_de(x[12], x[14])
         x[19:] = [t, como_de(x[12], x[14]) if t else '']
