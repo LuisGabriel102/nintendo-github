@@ -11,12 +11,16 @@
     var qd=window.quandoTxt(r[6],r[2]);
     return '<div class="card"><div class="ct"><a href="https://github.com/'+esc(r[0])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a></div>'+
       '<div class="bs"><span class="b st">★ '+r[1]+'</span><span class="b gr">'+esc(r[3])+'</span>'+origem(r)+(r[2]?'<span class="b arq">ARQ</span>':'')+'<button class="sel" type="button" data-sel="'+esc(r[0])+'"></button></div>'+
-      (r[4]?'<p class="faz">'+esc(r[4])+'</p>':'')+
+      explica(r,'O que faz:')+
       (r[5]?'<p class="forte"><b>👍 Faz bem:</b> '+esc(r[5])+'</p>':'')+
       (r[19]?'<div class="bs">'+selo(r)+'</div>'+como(r):'')+
       (r[13]?'<p class="risco"><b>⚠️ Atenção ('+esc(r[14])+'):</b> '+esc(r[13])+'</p>':'')+
       '<div class="meta">'+(qd?'<span class="quando '+qd.c+'">'+qd.t+'</span>':'')+
       (r[7]?'<a class="baixar" href="'+esc(r[7])+'" target="_blank" rel="noopener">⬇ Baixar '+esc(r[8])+'</a>':'')+'</div></div>';
+  }
+  function explica(r,rot){
+    if(r[22])return '<p class="simples"><b>🗣️ Em palavras simples:</b> '+esc(r[22])+'</p>'+(r[4]?'<p class="tec"><b>🔧 Explicação técnica:</b> '+esc(r[4])+'</p>':'');
+    return r[4]?'<p class="faz"><b>'+rot+'</b> '+esc(r[4])+'</p>':'';
   }
   var TN={pir:'🏴‍☠️ Pirataria',gol:'🎣 Golpe',mal:'🦠 Vírus (malware)'};
   function selo(r){return r[19]?'<span class="b tp-'+r[19]+'">'+TN[r[19]]+'</span>':''}
@@ -25,7 +29,7 @@
     var nome=r[15]?'<span class="semlink" title="Sem link de propósito">'+esc(r[0])+'</span>':'<a href="https://github.com/'+esc(r[0])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a>';
     return '<div class="card ocu-card'+(r[15]?' perigo':'')+'"><div class="ct">'+nome+'</div>'+
       '<div class="bs">'+selo(r)+(r[17]?'<span class="b susp-b">❓ Suspeito</span>':'<span class="b ocu-b">🚫 Oculto</span>')+(r[12]?'<span class="b gr">'+esc(r[12])+'</span>':'')+(r[1]?'<span class="b st">★ '+r[1]+'</span>':'')+'</div>'+
-      (r[4]?'<p class="faz"><b>O que faz:</b> '+esc(r[4])+'</p>':'')+
+      explica(r,'O que faz:')+
       (r[11]?'<p class="ocu-m"><b>Por que está oculto:</b> '+esc(r[11])+'</p>':'')+como(r)+
       (r[13]?'<p class="risco"><b>⚠️ Riscos'+(r[14]?' ('+esc(r[14])+')':'')+':</b> '+esc(r[13])+'</p>':'')+
       (r[15]?'<p class="nota">Sem link de propósito: é pirataria ou golpe. Veja <a href="riscos.html">⚖️ Riscos e lei</a>.</p>':'')+'</div>';
@@ -54,7 +58,7 @@
     filtrado=[];
     dados.forEach(function(r){
       // ocultos: aparecem com o botão, no filtro "Ocultos" ou quando a busca é sobre pirataria/golpe/vírus/catálogo/instalação
-      if(r[10]&&!verOcu&&cat!=='Ocultos'&&!(busca&&an.pir&&r[15]))return;
+      if(r[10]&&!verOcu&&cat!=='Ocultos'&&!(busca&&r[15]))return;
       if(cat==='Ocultos'){if(!r[10])return}else if(cat!=='Todos'&&r[3]!==cat&&!(busca&&r[10]))return;
       if(ordem==='b'&&!r[7])return;
       if(lg&&r[21]!==lg)return;

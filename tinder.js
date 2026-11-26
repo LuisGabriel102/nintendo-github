@@ -107,7 +107,7 @@
       d = d.filter(function (r) { return !r[10]; });
       var gs = []; cacheLista = d.map(function (r) {
         if (gs.indexOf(r[3]) < 0) gs.push(r[3]);
-        return { capa: r[9] || "", p: r[6] || "", rel: r[7] || "", relt: r[8] || "", repo: r[0], f: esc(r[5] || autoForte(r)), n: r[0], u: "https://github.com/" + r[0], h: "", d: esc(r[4] || "(sem descrição)"), g: r[3], sub: "", e: String(r[1]), r: false, arq: !!r[2], cor: gs.indexOf(r[3]) };
+        return { simp: r[22] || "", capa: r[9] || "", p: r[6] || "", rel: r[7] || "", relt: r[8] || "", repo: r[0], f: esc(r[5] || autoForte(r)), n: r[0], u: "https://github.com/" + r[0], h: "", d: esc(r[4] || "(sem descrição)"), g: r[3], sub: "", e: String(r[1]), r: false, arq: !!r[2], cor: gs.indexOf(r[3]) };
       }); cb(cacheLista);
     }).catch(function () { cb([]); });
   }
@@ -180,7 +180,9 @@
       capa(x) + '<span class="t-gr2">' + (ICO[x.g] || "🎮") + " " + esc(x.g) + "</span></div>" +
       '<div class="t-corpo"><div class="t-tit"><a href="' + x.u + '" target="_blank" rel="noopener">' + esc(x.n) + "</a></div>" +
       (x.sub || x.arq ? '<div class="t-sec">' + esc(x.sub) + (x.arq ? (x.sub ? " · " : "") + "arquivado (sem atualização)" : "") + "</div>" : "") +
-      '<div class="t-bloco"><h4>O que faz</h4><div class="t-desc">' + x.d + "</div></div>" +
+      (x.simp ? '<div class="t-bloco"><h4>🗣️ Em palavras simples</h4><div class="t-desc">' + esc(x.simp) + "</div></div>" +
+        '<div class="t-bloco"><h4>🔧 Explicação técnica</h4><div class="t-desc">' + x.d + "</div></div>"
+        : '<div class="t-bloco"><h4>O que faz</h4><div class="t-desc">' + x.d + "</div></div>") +
       (x.f ? '<div class="t-bloco t-bem"><h4>👍 O que faz bem</h4><div class="t-desc">' + x.f + "</div></div>" : "") +
       (function () { var q = window.quandoTxt && window.quandoTxt(x.p, x.arq); return q ? '<div class="t-sec"><span class="quando ' + q.c + '">' + q.t + "</span></div>" : ""; })() +
       '<div class="t-links">' + (x.rel ? '<a class="t-ver t-bx" href="' + esc(x.rel) + '" target="_blank" rel="noopener">⬇ Baixar ' + esc(x.relt || "") + "</a>" : "") +

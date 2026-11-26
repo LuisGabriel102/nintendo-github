@@ -426,7 +426,9 @@ def pagina_riscos(itens):
                 ('<span class="b susp-b">❓ Suspeito</span>' if suspeito else '<span class="b ocu-b">🚫 Sem link</span>') +
                 f'<span class="b gr">{html.escape(u["cat"])}</span>{rede}'
                 + (f'<span class="b st">★ {fmt(u["est"])}</span>' if u['est'] else '') + '</div>'
-                f'<p class="faz"><b>O que faz:</b> {html.escape(x[4])}</p>'
+                + (f'<p class="simples"><b>🗣️ Em palavras simples:</b> {html.escape(x[22])}</p>'
+                   f'<p class="tec"><b>🔧 Explicação técnica:</b> {html.escape(x[4])}</p>' if len(x) > 22 and x[22]
+                   else f'<p class="faz"><b>O que faz:</b> {html.escape(x[4])}</p>')
                 + (f'<p class="como tp-{x[19]}"><b>⚙️ Como funciona:</b> {html.escape(x[20])}</p>' if x[20] else '')
                 + (f'<p class="risco"><b>⚠️ Riscos e lei:</b> {html.escape(x[13])}</p>' if x[13] else '')
                 + (f'<p class="ocu-m"><b>Por que é só suspeito:</b> {html.escape(x[18])}</p>' if suspeito and x[18] else '')
@@ -493,7 +495,7 @@ def pagina_riscos(itens):
                    '<div class="tab"><table><thead><tr><th>#</th><th>Ferramenta</th><th>★</th><th>Tipo</th><th>O que faz</th><th>Identificador</th></tr></thead><tbody>' +
                    ''.join(f'<tr><td>{i}</td><td><b>{html.escape(u["nome"])}</b>'
                            + (f'<br><small>rede de {len(u["xs"])} repositórios</small>' if len(u['xs']) > 1 else '') +
-                           f'</td><td>{fmt(u["est"])}</td><td>' + (f'<span class="b tp-{u["xs"][0][19]}">{TIPO_NOME[u["xs"][0][19]]}</span><br>' if u["xs"][0][19] else '') + f'<small>{html.escape(u["cat"])}</small></td><td>{html.escape(u["xs"][0][4])}</td>'
+                           f'</td><td>{fmt(u["est"])}</td><td>' + (f'<span class="b tp-{u["xs"][0][19]}">{TIPO_NOME[u["xs"][0][19]]}</span><br>' if u["xs"][0][19] else '') + f'<small>{html.escape(u["cat"])}</small></td><td>{html.escape(u["xs"][0][22] if len(u["xs"][0]) > 22 and u["xs"][0][22] else u["xs"][0][4])}</td>'
                            f'<td><code>{html.escape(u["xs"][0][0])}</code>' + (' e outros' if len(u['xs']) > 1 else '') + '</td></tr>'
                            for i, u in enumerate(alvos, 1)) +
                    '</tbody></table></div>')
@@ -587,9 +589,13 @@ if REPOS:
                       1 if (perigo and (cat == 'Malware disfarçado' or tr == 'Malware')) else 0,
                       'Marcado só pelo padrão de isca (título de propaganda, link externo, sem código). Não dá para confirmar que contém vírus sem analisar o arquivo.'
                       if (perigo and (cat == 'Malware disfarçado' or tr == 'Malware')) else ''])
+    SIMP = {}
+    _sp = os.path.join(AQUI, '_trabalho', 'saidas_s', 'pir.json')
+    if os.path.exists(_sp):
+        SIMP = {k.lower(): v for k, v in json.load(open(_sp, encoding='utf-8')).items()}
     for x in itens:
         t = tipo_de(x[12], x[14])
-        x[19:] = [t, como_de(x[12], x[14]) if t else '', (REPOS.get(x[0].lower()) or {}).get('lg', '')]
+        x[19:] = [t, como_de(x[12], x[14]) if t else '', (REPOS.get(x[0].lower()) or {}).get('lg', ''), SIMP.get(x[0].lower(), '')]
     itens.sort(key=lambda x: -x[1])
     fora = sum(1 for x in itens if x[10])
     json.dump(itens, open(os.path.join(AQUI, 'lista.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

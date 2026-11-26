@@ -11,7 +11,7 @@
   // temas: gatilhos (regex em texto normalizado), termos extras para procurar, explicação, se mostra ocultos de pirataria
   var TEMAS = [
     { id: "catalogo", tit: "📚 Catálogos e lojas de jogos",
-      gat: /catalog|loja|shop|store|indice|vitrine|cardapio|lista de jogo|banco de dados|titledb|database/,
+      gat: /catalog|loja|shop|store|indice|vitrine|cardapio|lista de jogo|banco de dados|titledb|database|tinfoil/,
       extra: ["catalogo", "loja", "shop", "store", "indice", "lista de jogos", "titledb", "banco de dados", "eshop", "biblioteca", "tinfoil", "ownfoil", "nut", "database", "vitrine"],
       pir: 1,
       txt: "“Catálogo de jogos” pode ser três coisas bem diferentes: (1) a <b>loja oficial</b> (eShop) e bancos de dados com nomes e códigos dos jogos (titledb) — legítimo; " +
@@ -31,7 +31,7 @@
       txt: "Uma <b>biblioteca de jogos</b> legítima organiza os jogos que <b>você tem</b> (capas, nomes, versões) e abre no emulador ou manda para o seu console — ex.: frontends, ownfoil, nut. " +
            "Vira pirataria quando a “biblioteca” é de jogos <b>de outras pessoas</b>, compartilhada para qualquer um baixar." },
     { id: "instalacao", tit: "📡 Instalação de jogos pela internet ou pela rede",
-      gat: /instal|install|online|pela rede|rede local|wifi|wi-fi|internet|remot|servidor|nuvem|google drive|usb/,
+      gat: /instal|install|online|pela rede|rede local|wifi|wi-fi|internet|remot|servidor|nuvem|google drive|usb|tinfoil|dbi|awoo/,
       extra: ["instalar", "instalador", "instala", "install", "installer", "rede", "network", "servidor", "server", "online", "internet", "google drive", "drive", "tinfoil", "dbi", "awoo", "goldleaf", "sphaira", "loja", "shop", "nsp", "nut", "ownfoil"],
       pir: 1,
       txt: "Instaladores para Switch desbloqueado (Awoo, Goldleaf, DBI, sphaira, Tinfoil) conseguem instalar jogos <b>pelo cabo, pela rede de casa ou pela internet</b>. " +
