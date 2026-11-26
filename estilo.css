@@ -94,3 +94,10 @@ html,body{overflow-x:hidden}
 .filtros small{opacity:.7;font-size:12px}
 .filtros.ordem{align-items:center}
 .filtros.ordem span{flex:none;font-size:13px;color:var(--muted)}
+.btn{font:inherit;font-size:14px;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:8px 12px;cursor:pointer}
+.m-acoes{display:flex;flex-wrap:wrap;gap:8px}
+.m-perigo{color:var(--veto)}
+#m-txt{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;resize:vertical}
+#m-txt:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.m-en{color:var(--muted);font-size:13px}
+.panel h2{font-size:20px}

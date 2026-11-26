@@ -258,7 +258,7 @@
   function mostrarLista() {
     var g = Object.keys(guardados).map(function (k) { return guardados[k]; });
     lista.innerHTML = '<div class="t-col"><div class="t-topo"><h2>⭐ Guardados (' + g.length + ')</h2><div class="t-conta"></div><button class="t-x" data-a="voltar">✕</button></div>' +
-      '<div class="t-acoes"><button data-a="copiar">Copiar lista</button><button data-a="zerar-nao">Esquecer pulados (' + pulados.size + ')</button><button data-a="zerar-sim">Apagar guardados</button></div>' +
+      '<div class="t-acoes"><a class="t-ver" href="minha.html">⭐ Abrir Minha seleção completa</a><button data-a="copiar">Copiar lista</button><button data-a="zerar-nao">Esquecer pulados (' + pulados.size + ')</button><button data-a="zerar-sim">Apagar guardados</button></div>' +
       (g.length ? g.map(function (x) {
         return '<div class="t-li"><b><a href="' + x.u + '" target="_blank" rel="noopener">' + esc(x.n) + '</a></b><span>' + esc(x.g) + " · " + esc((x.d || "").slice(0, 140)) + '</span><button data-del="' + esc(x.n) + '">tirar</button></div>';
       }).join("") : '<p class="t-dica" style="font-size:15px">Nada guardado ainda. Arraste para a direita os que interessam.</p>') + "</div>";

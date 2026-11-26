@@ -7,7 +7,7 @@
   function card(r){
     var qd=window.quandoTxt(r[6],r[2]);
     return '<div class="card"><div class="ct"><a href="https://github.com/'+esc(r[0])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a></div>'+
-      '<div class="bs"><span class="b st">★ '+r[1]+'</span><span class="b gr">'+esc(r[3])+'</span>'+(r[2]?'<span class="b arq">ARQ</span>':'')+'</div>'+
+      '<div class="bs"><span class="b st">★ '+r[1]+'</span><span class="b gr">'+esc(r[3])+'</span>'+(r[2]?'<span class="b arq">ARQ</span>':'')+'<button class="sel" type="button" data-sel="'+esc(r[0])+'"></button></div>'+
       (r[4]?'<p class="faz">'+esc(r[4])+'</p>':'')+
       (r[5]?'<p class="forte"><b>👍 Faz bem:</b> '+esc(r[5])+'</p>':'')+
       '<div class="meta">'+(qd?'<span class="quando '+qd.c+'">'+qd.t+'</span>':'')+
@@ -16,7 +16,7 @@
   function desenha(reset){
     if(reset){lst.innerHTML='';mostrados=0}
     var h='';for(var i=mostrados;i<Math.min(mostrados+PASSO,filtrado.length);i++)h+=card(filtrado[i]);
-    lst.insertAdjacentHTML('beforeend',h);mostrados=Math.min(mostrados+PASSO,filtrado.length);
+    lst.insertAdjacentHTML('beforeend',h);if(window.SEL)SEL.pintar(lst);mostrados=Math.min(mostrados+PASSO,filtrado.length);
     mais.hidden=mostrados>=filtrado.length;
     mais.textContent='Mostrar mais ('+(filtrado.length-mostrados)+' restantes)';
     nada.hidden=filtrado.length>0;

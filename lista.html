@@ -99,10 +99,17 @@ html,body{overflow-x:hidden}
 .filtros small{opacity:.7;font-size:12px}
 .filtros.ordem{align-items:center}
 .filtros.ordem span{flex:none;font-size:13px;color:var(--muted)}
+.btn{font:inherit;font-size:14px;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:8px 12px;cursor:pointer}
+.m-acoes{display:flex;flex-wrap:wrap;gap:8px}
+.m-perigo{color:var(--veto)}
+#m-txt{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;resize:vertical}
+#m-txt:focus{outline:2px solid var(--accent);border-color:var(--accent)}
+.m-en{color:var(--muted);font-size:13px}
+.panel h2{font-size:20px}
 </style></head><body>
 <div class="wrap">
 <header><h1>🎮 Lista completa</h1><p class="sub">2206 projetos explicados em português · o que faz, o que faz bem, quando foi atualizado e onde baixar</p></header>
-<div class="pular"><input id="q" type="search" placeholder="Buscar (2206 projetos)" autocomplete="off" aria-label="Buscar"><div class="pular-trilho"><a href="index.html" class="lc">← Guia explicado</a><a href="index.html#tinder">🃏 Modo Tinder</a></div></div>
+<div class="pular"><input id="q" type="search" placeholder="Buscar (2206 projetos)" autocomplete="off" aria-label="Buscar"><div class="pular-trilho"><a href="index.html" class="lc">← Guia explicado</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="index.html#tinder">🃏 Modo Tinder</a></div></div>
 <section class="panel lista"><p>2206 projetos ligados à Nintendo, explicados em português. Saíram 241 que só usavam o nome (temas, bots de Pokémon GO, decompiladores genéricos…). Os mais importantes têm explicação maior e exemplos no <a href="index.html">guia</a>.</p><div class="filtros"><button data-c="Todos" aria-pressed="true">Todos</button><button data-c="Switch" aria-pressed="false">Switch <small>374</small></button><button data-c="3DS" aria-pressed="false">3DS <small>196</small></button><button data-c="Wii U" aria-pressed="false">Wii U <small>140</small></button><button data-c="Wii/GC" aria-pressed="false">Wii/GC <small>125</small></button><button data-c="DS" aria-pressed="false">DS <small>134</small></button><button data-c="Game Boy" aria-pressed="false">Game Boy <small>256</small></button><button data-c="N64" aria-pressed="false">N64 <small>112</small></button><button data-c="SNES" aria-pressed="false">SNES <small>66</small></button><button data-c="NES" aria-pressed="false">NES <small>155</small></button><button data-c="Virtual Boy" aria-pressed="false">Virtual Boy <small>31</small></button><button data-c="Decomp" aria-pressed="false">Decomp <small>254</small></button><button data-c="Pokémon" aria-pressed="false">Pokémon <small>59</small></button><button data-c="Zelda" aria-pressed="false">Zelda <small>50</small></button><button data-c="Mario" aria-pressed="false">Mario <small>75</small></button><button data-c="amiibo" aria-pressed="false">amiibo <small>60</small></button><button data-c="Multi" aria-pressed="false">Multi <small>77</small></button><button data-c="Geral" aria-pressed="false">Geral <small>42</small></button></div><div class="filtros ordem"><span>Ordenar:</span><button data-o="s" aria-pressed="true">★ Estrelas</button><button data-o="p" aria-pressed="false">🕒 Atualizados</button><button data-o="b" aria-pressed="false">⬇ Com download</button></div><div id="lst" class="cards"></div><button id="mais" class="mais">Mostrar mais</button></section><p id="nada" hidden>Nada encontrado.</p>
 </div>
 <footer>Levantamento de 26/11/2026 · estrelas do GitHub nessa data · <a href="#" onclick="scrollTo(0,0);return false">↑ topo</a></footer>
@@ -126,6 +133,80 @@ window.preencherQuando = function (raiz) {
   });
 };
 document.addEventListener("DOMContentLoaded", function () { window.preencherQuando(); });
+/* selecao.js — "Minha seleção": estrela ☆/★ em cada card + botão flutuante.
+   Fica no aparelho (localStorage), na mesma chave dos "guardados" do Tinder (ngh-T-sim). */
+(function () {
+  "use strict";
+  var K = "ngh-T-sim";
+  function ler() { try { var v = JSON.parse(localStorage.getItem(K) || "{}"); return v && typeof v === "object" && !Array.isArray(v) ? v : {}; } catch (e) { return {}; } }
+  function gravar(v) { try { localStorage.setItem(K, JSON.stringify(v)); } catch (e) {} }
+  function chave(n) { return String(n || "").trim().replace(/^https?:\/\/github\.com\//i, "").replace(/\.git$/, "").replace(/\/+$/, "").split(/[?#]/)[0]; }
+  var SEL = window.SEL = {
+    todos: function () { return ler(); },
+    tem: function (n) { var s = ler(), k = chave(n).toLowerCase(); return Object.keys(s).some(function (x) { return x.toLowerCase() === k; }); },
+    add: function (n, extra) {
+      var s = ler(), k = chave(n); if (!/^[\w.-]+\/[\w.-]+$/.test(k)) return false;
+      if (SEL.tem(k)) return false;
+      var o = extra || {}; o.n = k; o.u = "https://github.com/" + k; o.t = Date.now();
+      s[k] = o; gravar(s); SEL.pintar(); return true;
+    },
+    del: function (n) {
+      var s = ler(), k = chave(n).toLowerCase();
+      Object.keys(s).forEach(function (x) { if (x.toLowerCase() === k) delete s[x]; });
+      gravar(s); SEL.pintar();
+    },
+    conta: function () { return Object.keys(ler()).length; },
+    // marca os botões ☆/★ e atualiza o contador flutuante
+    pintar: function (raiz) {
+      var s = ler(), set = {};
+      Object.keys(s).forEach(function (x) { set[x.toLowerCase()] = 1; });
+      (raiz || document).querySelectorAll("[data-sel]").forEach(function (b) {
+        var on = !!set[b.getAttribute("data-sel").toLowerCase()];
+        b.setAttribute("aria-pressed", on); b.textContent = on ? "★ Na seleção" : "☆ Selecionar";
+      });
+      var f = document.getElementById("sel-flut");
+      if (f) { var n = Object.keys(s).length; f.querySelector("b").textContent = n; f.hidden = !n && !/minha\.html/.test(location.pathname); }
+    }
+  };
+  // ---- estilo ----
+  var css = document.createElement("style");
+  css.textContent = [
+    ".sel{margin-left:auto;font:inherit;font-size:12px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:2px 10px;cursor:pointer;white-space:nowrap}",
+    ".sel[aria-pressed=\"true\"]{border-color:var(--star);background:var(--star-bg);color:var(--star)}",
+    "#sel-flut{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:30;display:flex;align-items:center;gap:6px;background:var(--accent);color:var(--accent-ink);font-weight:700;border-radius:999px;padding:11px 16px;box-shadow:0 6px 18px rgba(0,0,0,.28);text-decoration:none}",
+    "#sel-flut[hidden]{display:none}",
+    "#sel-flut b{background:var(--accent-ink);color:var(--accent);border-radius:999px;padding:0 8px;font-size:13px}",
+    "html.t-aberto #sel-flut{display:none}"
+  ].join("\n");
+  document.head.appendChild(css);
+  // ---- botão nos cards do guia (os da lista já vêm com o botão) ----
+  function porNosCards() {
+    document.querySelectorAll(".card[data-repo]").forEach(function (c) {
+      if (c.querySelector("[data-sel]")) return;
+      var bs = c.querySelector(".bs"); if (!bs) return;
+      var b = document.createElement("button"); b.className = "sel"; b.type = "button";
+      b.setAttribute("data-sel", c.getAttribute("data-repo")); bs.appendChild(b);
+    });
+  }
+  function flutuante() {
+    if (/minha\.html/.test(location.pathname)) return;
+    var a = document.createElement("a"); a.id = "sel-flut"; a.href = "minha.html";
+    a.innerHTML = "⭐ Minha seleção <b>0</b>"; document.body.appendChild(a);
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-sel]"); if (!b) return;
+    e.preventDefault();
+    var n = b.getAttribute("data-sel");
+    if (SEL.tem(n)) SEL.del(n);
+    else {
+      var c = b.closest(".card"), d = c && c.querySelector(".faz"), g = c && c.getAttribute("data-g");
+      SEL.add(n, { d: d ? d.textContent.trim() : "", g: g || "" });
+    }
+  });
+  window.addEventListener("storage", function (e) { if (e.key === K) SEL.pintar(); });
+  function iniciar() { porNosCards(); flutuante(); SEL.pintar(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();
+})();
 /* lista.js — lista completa. Item: [nome, estrelas, arquivado, grupo, o que faz, faz bem, atualizado, release, tag, capa] */
 (function(){
   var lst=document.getElementById('lst'),mais=document.getElementById('mais'),q=document.getElementById('q'),nada=document.getElementById('nada');
@@ -135,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () { window.preencherQuan
   function card(r){
     var qd=window.quandoTxt(r[6],r[2]);
     return '<div class="card"><div class="ct"><a href="https://github.com/'+esc(r[0])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a></div>'+
-      '<div class="bs"><span class="b st">★ '+r[1]+'</span><span class="b gr">'+esc(r[3])+'</span>'+(r[2]?'<span class="b arq">ARQ</span>':'')+'</div>'+
+      '<div class="bs"><span class="b st">★ '+r[1]+'</span><span class="b gr">'+esc(r[3])+'</span>'+(r[2]?'<span class="b arq">ARQ</span>':'')+'<button class="sel" type="button" data-sel="'+esc(r[0])+'"></button></div>'+
       (r[4]?'<p class="faz">'+esc(r[4])+'</p>':'')+
       (r[5]?'<p class="forte"><b>👍 Faz bem:</b> '+esc(r[5])+'</p>':'')+
       '<div class="meta">'+(qd?'<span class="quando '+qd.c+'">'+qd.t+'</span>':'')+
@@ -144,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () { window.preencherQuan
   function desenha(reset){
     if(reset){lst.innerHTML='';mostrados=0}
     var h='';for(var i=mostrados;i<Math.min(mostrados+PASSO,filtrado.length);i++)h+=card(filtrado[i]);
-    lst.insertAdjacentHTML('beforeend',h);mostrados=Math.min(mostrados+PASSO,filtrado.length);
+    lst.insertAdjacentHTML('beforeend',h);if(window.SEL)SEL.pintar(lst);mostrados=Math.min(mostrados+PASSO,filtrado.length);
     mais.hidden=mostrados>=filtrado.length;
     mais.textContent='Mostrar mais ('+(filtrado.length-mostrados)+' restantes)';
     nada.hidden=filtrado.length>0;

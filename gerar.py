@@ -229,7 +229,8 @@ def curto(t):
 
 CSS = open(os.path.join(AQUI, 'estilo.css'), encoding='utf-8').read()
 TEMPO = open(os.path.join(AQUI, 'tempo.js'), encoding='utf-8').read()
-JS = TEMPO + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read()
+SJS = open(os.path.join(AQUI, 'selecao.js'), encoding='utf-8').read()
+JS = TEMPO + SJS + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read()
 
 TJS = open(os.path.join(AQUI, 'tinder.js'), encoding='utf-8').read()
 DSC = {'Removidos': 'saíram do GitHub', 'Switch': 'CFW, homebrew, tradução', '3DS': 'Luma, GodMode9, Azahar',
@@ -239,7 +240,7 @@ DSC = {'Removidos': 'saíram do GitHub', 'Switch': 'CFW, homebrew, tradução', 
        'Multi': 'RetroArch e cia.', 'Tradução': 'o que usar'}
 def ncards(s): return ''.join(s[2]).count('<div class="card')
 TOTAL = sum(ncards(s) for s in secoes)
-nav = ('<a href="#tinder" id="t-abrir" class="lc">🃏 Modo Tinder</a><a href="#comece">Comece</a>' +
+nav = ('<a href="#tinder" id="t-abrir" class="lc">🃏 Modo Tinder</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="#comece">Comece</a>' +
        ''.join(f'<a href="#s{s[0]}">{html.escape(curto(s[1]))}</a>' for s in secoes) + '<a href="lista.html" class="lc">Lista completa →</a>')
 tiles = '<div class="tiles">' + ''.join(
     f'<a class="tile c{i % 7}" href="#s{s[0]}"><span class="num">{ncards(s) or "✓"}</span><span class="lbl">{html.escape(curto(s[1]))}</span><span class="dsc">{DSC.get(curto(s[1]), "")}</span></a>'
@@ -295,9 +296,9 @@ if REPOS:
               '<button id="mais" class="mais">Mostrar mais</button></section>')
     open(os.path.join(AQUI, 'lista.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Lista completa — Nintendo no GitHub', css=CSS,
-                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='',
+                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='',
                    h1='Lista completa', sub=f'{len(itens)} projetos explicados em português · o que faz, o que faz bem, quando foi atualizado e onde baixar',
-                   js='window.LISTA=' + json.dumps(itens, ensure_ascii=False, separators=(',', ':')).replace('</', '<' + chr(92) + '/') + ';' + chr(10) + TEMPO +
+                   js='window.LISTA=' + json.dumps(itens, ensure_ascii=False, separators=(',', ':')).replace('</', '<' + chr(92) + '/') + ';' + chr(10) + TEMPO + SJS +
                       open(os.path.join(AQUI, 'lista.js'), encoding='utf-8').read(), ph=f'{len(itens)} projetos'))
     # markdown da lista completa (PC)
     md = ['# Lista completa — projetos Nintendo no GitHub', '',
@@ -311,4 +312,20 @@ if REPOS:
         md.append('')
     open(os.path.join(os.path.dirname(AQUI), 'GITHUB-NINTENDO-LISTA-COMPLETA.md'), 'w', encoding='utf-8').write(chr(10).join(md))
     print('lista:', len(itens), 'fora:', fora)
+corpo3 = (
+    '<section class="panel"><h2>⭐ Minha seleção (<span id="m-total">0</span>)</h2>'
+    '<p>Fica salva <b>neste aparelho</b>. Para levar para outro celular ou PC, use <b>Copiar lista</b> e cole lá no campo abaixo.</p>'
+    '<div class="m-acoes"><button class="btn" data-m="copiar">📋 Copiar lista</button><button class="btn" data-m="zap">💬 Mandar no WhatsApp</button>'
+    '<button class="btn" data-m="txt">⬇ Baixar .txt</button><button class="btn m-perigo" data-m="limpar">🗑 Limpar</button></div></section>'
+    '<section class="panel"><h2>➕ Adicionar repositórios</h2>'
+    '<p>Cole <b>nomes</b> (ex.: <code>CTCaer/hekate</code>), <b>links do GitHub</b> ou até uma <b>conversa do WhatsApp</b> inteira — eu acho os nomes sozinho. '
+    'Também entende <code>WerWolv/Tesla-Menu + nx-ovlloader</code>. Projetos que não estão no site são conferidos direto no GitHub.</p>'
+    '<textarea id="m-txt" rows="6" placeholder="CTCaer/hekate&#10;https://github.com/nicoboss/nsz&#10;[11:13] Huntereb/Awoo-Installer"></textarea>'
+    '<button id="m-add" class="mais">Adicionar à seleção</button><p id="m-msg" class="nota" hidden></p></section>'
+    '<section class="panel"><div id="m-lista" class="cards"></div></section>')
+open(os.path.join(AQUI, 'minha.html'), 'w', encoding='utf-8').write(
+    PAG.format(tit='Minha seleção — Nintendo no GitHub', css=CSS,
+               nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html" class="lc">Lista completa</a><a href="index.html#tinder">🃏 Modo Tinder</a>',
+               corpo=corpo3, tjs='', h1='Minha seleção', sub='Os projetos que você marcou com ☆, guardou no Tinder ou adicionou aqui',
+               js=TEMPO + SJS + open(os.path.join(AQUI, 'minha.js'), encoding='utf-8').read(), ph='na sua seleção'))
 print('secoes:', len(secoes))
