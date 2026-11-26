@@ -163,10 +163,17 @@ h3.tp-h{color:var(--tc);font-size:19px;border-top:2px solid var(--tc);padding-to
  .tab td:nth-child(3){display:inline-block;width:auto;margin-left:8px;color:var(--star);font-weight:600}
  .tab td:nth-child(4){font-size:13px;color:var(--muted)}
 }
+.pular-trilho a.ocu-nav{background:var(--veto-bg);border-color:var(--veto);color:var(--veto);font-weight:700}
+a.tile{text-decoration:none}
+a.tile:active,a.tile:hover{border-color:var(--c)}
+#faixa-ocu{margin:0 0 12px;padding:10px 14px;border-radius:10px;background:var(--veto-bg);border-left:4px solid var(--veto);font-size:14px}
+#faixa-ocu[hidden]{display:none}
+#faixa-ocu b{color:var(--veto)}
+#faixa-ocu button{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:4px 10px;margin-top:6px;cursor:pointer}
 </style></head><body>
 <div class="wrap">
 <header><h1>🎮 Minha seleção</h1><p class="sub">Os projetos que você marcou com ☆, guardou no Tinder ou adicionou aqui</p></header>
-<div class="pular"><input id="q" type="search" placeholder="Buscar (na sua seleção)" autocomplete="off" aria-label="Buscar"><div class="pular-trilho"><a href="index.html" class="lc">← Guia explicado</a><a href="lista.html" class="lc">Lista completa</a><a href="index.html#tinder">🃏 Modo Tinder</a></div></div>
+<div class="pular"><input id="q" type="search" placeholder="Buscar (na sua seleção)" autocomplete="off" aria-label="Buscar"><div class="pular-trilho"><a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="lista.html" class="lc">Lista completa</a><a href="index.html#tinder">🃏 Modo Tinder</a></div></div>
 <section class="panel"><h2>⭐ Minha seleção (<span id="m-total">0</span>)</h2><p>Fica salva <b>neste aparelho</b>. Para levar para outro celular ou PC, use <b>Copiar lista</b> e cole lá no campo abaixo.</p><div class="m-acoes"><button class="btn" data-m="copiar">📋 Copiar lista</button><button class="btn" data-m="zap">💬 Mandar no WhatsApp</button><button class="btn" data-m="txt">⬇ Baixar .txt</button><button class="btn m-perigo" data-m="limpar">🗑 Limpar</button></div></section><section class="panel"><h2>➕ Adicionar repositórios</h2><p>Cole <b>nomes</b> (ex.: <code>CTCaer/hekate</code>), <b>links do GitHub</b> ou até uma <b>conversa do WhatsApp</b> inteira — eu acho os nomes sozinho. Também entende <code>WerWolv/Tesla-Menu + nx-ovlloader</code>. Projetos que não estão no site são conferidos direto no GitHub.</p><textarea id="m-txt" rows="6" placeholder="CTCaer/hekate&#10;https://github.com/nicoboss/nsz&#10;[11:13] Huntereb/Awoo-Installer"></textarea><button id="m-add" class="mais">Adicionar à seleção</button><p id="m-msg" class="nota" hidden></p></section><section class="panel"><div id="m-lista" class="cards"></div></section><p id="nada" hidden>Nada encontrado.</p>
 </div>
 <footer>Levantamento de 26/11/2026 · estrelas do GitHub nessa data · <a href="#" onclick="scrollTo(0,0);return false">↑ topo</a></footer>

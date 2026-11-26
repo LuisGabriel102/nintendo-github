@@ -61,7 +61,22 @@
   var bo=document.querySelector('[data-ocu]');
   function ocu(on){verOcu=on;if(bo)bo.setAttribute('aria-pressed',on);filtra();}
   if(bo)bo.addEventListener('click',function(){ocu(!verOcu)});
-  if(/ocultos/.test(location.hash))setTimeout(function(){ocu(true)},0);
+  function soOcultos(){
+    cat='Ocultos';
+    document.querySelectorAll('.filtros button[data-c]').forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-c')==='Ocultos')});
+    ocu(true);
+  }
+  var faixa=document.createElement('div');faixa.id='faixa-ocu';faixa.hidden=true;
+  faixa.innerHTML='<b>🚫 Você está vendo os ocultos</b> — cada um diz o que faz, por que ficou de fora e os riscos. '+
+    '<a href="riscos.html">⚖️ Pirataria, golpe e vírus</a> · <button type="button" id="faixa-volta">Voltar para os visíveis</button>';
+  lst.parentNode.insertBefore(faixa,lst);
+  document.getElementById('faixa-volta').addEventListener('click',function(){
+    cat='Todos';document.querySelectorAll('.filtros button[data-c]').forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-c')==='Todos')});
+    if(location.hash)history.replaceState(null,'',location.pathname);ocu(false);
+  });
+  var filtraAnt=filtra;filtra=function(){faixa.hidden=!(cat==='Ocultos');filtraAnt();};
+  if(/ocultos/.test(location.hash))setTimeout(soOcultos,0);
+  window.addEventListener('hashchange',function(){if(/ocultos/.test(location.hash))soOcultos();});
   var t;q.addEventListener('input',function(){clearTimeout(t);t=setTimeout(filtra,150)});
   mais.addEventListener('click',function(){desenha(false)});
   if(window.LISTA){dados=window.LISTA;filtra();return}

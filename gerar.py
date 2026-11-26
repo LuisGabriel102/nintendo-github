@@ -240,7 +240,7 @@ DSC = {'Removidos': 'saíram do GitHub', 'Switch': 'CFW, homebrew, tradução', 
        'Multi': 'RetroArch e cia.', 'Tradução': 'o que usar'}
 def ncards(s): return ''.join(s[2]).count('<div class="card')
 TOTAL = sum(ncards(s) for s in secoes)
-nav = ('<a href="#tinder" id="t-abrir" class="lc">🃏 Modo Tinder</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="#comece">Comece</a>' +
+nav = ('<a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="#tinder" id="t-abrir" class="lc">🃏 Modo Tinder</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="#comece">Comece</a>' +
        ''.join(f'<a href="#s{s[0]}">{html.escape(curto(s[1]))}</a>' for s in secoes) + '<a href="lista.html" class="lc">Lista completa →</a>')
 tiles = '<div class="tiles">' + ''.join(
     f'<a class="tile c{i % 7}" href="#s{s[0]}"><span class="num">{ncards(s) or "✓"}</span><span class="lbl">{html.escape(curto(s[1]))}</span><span class="dsc">{DSC.get(curto(s[1]), "")}</span></a>'
@@ -324,7 +324,9 @@ def numeros(itens, fora):
     for x in vis: est_g[x[3]] += x[1]
     cat = Counter(x[12] or 'Sem categoria' for x in ocu)
     def fmt(n): return f'{n:,}'.replace(',', '.')
-    def tile(i, num, lbl, dsc): return f'<div class="tile c{i}"><span class="num">{num}</span><span class="lbl">{lbl}</span><span class="dsc">{dsc}</span></div>'
+    def tile(i, num, lbl, dsc, href=''):
+        tag = f'a href="{href}"' if href else 'div'
+        return f'<{tag} class="tile c{i}"><span class="num">{num}</span><span class="lbl">{lbl}</span><span class="dsc">{dsc}</span></{tag.split()[0]}>'
     def barras(pares, total_lbl):
         mx = max(v for _, v in pares) or 1
         linhas = ''.join(
@@ -342,7 +344,7 @@ def numeros(itens, fora):
         '<div class="tiles">' +
         tile(1, fmt(len(itens)), 'Repositórios analisados', 'tudo o que as buscas acharam') +
         tile(4, fmt(len(vis)), 'Ligados à Nintendo', 'aparecem no site') +
-        tile(0, fmt(len(ocu)), 'Ocultos', 'só nome/visual ou sem relação') +
+        tile(0, fmt(len(ocu)), 'Ocultos', 'toque para ver todos, com o motivo', 'lista.html#ocultos') +
         tile(2, fmt(estrelas), 'Estrelas somadas', 'dos projetos visíveis') +
         tile(3, fmt(len(ativos)), 'Ativos', 'atualizados nos últimos 90 dias') +
         tile(1, fmt(com_dl), 'Com download pronto', 'têm versão em Releases') +
@@ -594,7 +596,7 @@ if REPOS:
     cont = {g: sum(1 for x in itens if x[3] == g and not x[10]) for g in GRUPOS}
     NVIS = sum(1 for x in itens if not x[10])
     cont['Ocultos'] = fora
-    cats = ['Todos'] + [g for g in GRUPOS if cont[g]] + ['Ocultos']
+    cats = ['Todos', 'Ocultos'] + [g for g in GRUPOS if cont[g]]
     filtros = ''.join(f'<button data-c="{c}" aria-pressed="{"true" if c == "Todos" else "false"}">{c}'
                       f'{"" if c == "Todos" else f" <small>{cont[c]}</small>"}</button>' for c in cats)
     ordem = ('<div class="filtros ordem"><span>Ordenar:</span><button data-o="s" aria-pressed="true">★ Estrelas</button>'
@@ -609,7 +611,7 @@ if REPOS:
               '<button id="mais" class="mais">Mostrar mais</button></section>')
     open(os.path.join(AQUI, 'lista.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Lista completa — Nintendo no GitHub', css=CSS,
-                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='',
+                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='',
                    h1='Lista completa', sub=f'{NVIS} projetos explicados em português (+{fora} ocultos) · o que faz, o que faz bem, quando foi atualizado e onde baixar',
                    js='window.LISTA=' + json.dumps(itens, ensure_ascii=False, separators=(',', ':')).replace('</', '<' + chr(92) + '/') + ';' + chr(10) + TEMPO + SJS +
                       open(os.path.join(AQUI, 'lista.js'), encoding='utf-8').read(), ph=f'{len(itens)} projetos'))
@@ -641,18 +643,18 @@ corpo3 = (
 if REPOS:
     open(os.path.join(AQUI, 'numeros.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Números — Nintendo no GitHub', css=CSS,
-                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html" class="lc">Lista completa</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="minha.html">⭐ Minha seleção</a>',
+                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="lista.html" class="lc">Lista completa</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="minha.html">⭐ Minha seleção</a>',
                    corpo=NUM, tjs='', h1='Nintendo no GitHub em números', sub='Levantamento de 26/11/2026 · tudo o que foi encontrado, inclusive o que ficou oculto',
                    js=TEMPO + SJS + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read(), ph='na página'))
 if REPOS:
     open(os.path.join(AQUI, 'riscos.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Riscos e lei — Nintendo no GitHub', css=CSS,
-                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="numeros.html" class="lc">📊 Números</a><a href="lista.html#ocultos">🚫 Ocultos</a>',
+                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="numeros.html" class="lc">📊 Números</a>',
                    corpo=RISC, tjs='', h1='⚖️ Pirataria, golpes e a lei', sub='O que é crime, o que é risco, e as ferramentas que ficaram de fora do site',
                    js=TEMPO + SJS + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read(), ph='na página'))
 open(os.path.join(AQUI, 'minha.html'), 'w', encoding='utf-8').write(
     PAG.format(tit='Minha seleção — Nintendo no GitHub', css=CSS,
-               nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html" class="lc">Lista completa</a><a href="index.html#tinder">🃏 Modo Tinder</a>',
+               nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="lista.html" class="lc">Lista completa</a><a href="index.html#tinder">🃏 Modo Tinder</a>',
                corpo=corpo3, tjs='', h1='Minha seleção', sub='Os projetos que você marcou com ☆, guardou no Tinder ou adicionou aqui',
                js=TEMPO + SJS + open(os.path.join(AQUI, 'minha.js'), encoding='utf-8').read(), ph='na sua seleção'))
 print('secoes:', len(secoes))

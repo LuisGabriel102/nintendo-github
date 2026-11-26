@@ -158,3 +158,10 @@ h3.tp-h{color:var(--tc);font-size:19px;border-top:2px solid var(--tc);padding-to
  .tab td:nth-child(3){display:inline-block;width:auto;margin-left:8px;color:var(--star);font-weight:600}
  .tab td:nth-child(4){font-size:13px;color:var(--muted)}
 }
+.pular-trilho a.ocu-nav{background:var(--veto-bg);border-color:var(--veto);color:var(--veto);font-weight:700}
+a.tile{text-decoration:none}
+a.tile:active,a.tile:hover{border-color:var(--c)}
+#faixa-ocu{margin:0 0 12px;padding:10px 14px;border-radius:10px;background:var(--veto-bg);border-left:4px solid var(--veto);font-size:14px}
+#faixa-ocu[hidden]{display:none}
+#faixa-ocu b{color:var(--veto)}
+#faixa-ocu button{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:4px 10px;margin-top:6px;cursor:pointer}
