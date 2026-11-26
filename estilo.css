@@ -101,8 +101,8 @@ html,body{overflow-x:hidden}
 #m-txt:focus{outline:2px solid var(--accent);border-color:var(--accent)}
 .m-en{color:var(--muted);font-size:13px}
 .panel h2{font-size:20px}
-.card.oculto{border-style:dashed;background:var(--gray-bg)}
-.card.oculto.perigo{border-color:var(--veto);border-style:solid;background:var(--veto-bg)}
+.card.ocu-card{border-style:dashed;background:var(--gray-bg)}
+.card.ocu-card.perigo{border-color:var(--veto);border-style:solid;background:var(--veto-bg)}
 .ocu-b{border-color:var(--gray);color:var(--gray);font-weight:600}
 .semlink{color:var(--ink);text-decoration:line-through dotted;text-decoration-thickness:1px}
 .ocu-m{font-size:14px!important}

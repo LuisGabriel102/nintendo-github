@@ -21,7 +21,7 @@
   function como(r){return r[20]?'<p class="como tp-'+r[19]+'"><b>⚙️ Como funciona:</b> '+esc(r[20])+'</p>':''}
   function cardOcu(r){
     var nome=r[15]?'<span class="semlink" title="Sem link de propósito">'+esc(r[0])+'</span>':'<a href="https://github.com/'+esc(r[0])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a>';
-    return '<div class="card oculto'+(r[15]?' perigo':'')+'"><div class="ct">'+nome+'</div>'+
+    return '<div class="card ocu-card'+(r[15]?' perigo':'')+'"><div class="ct">'+nome+'</div>'+
       '<div class="bs">'+selo(r)+(r[17]?'<span class="b susp-b">❓ Suspeito</span>':'<span class="b ocu-b">🚫 Oculto</span>')+(r[12]?'<span class="b gr">'+esc(r[12])+'</span>':'')+(r[1]?'<span class="b st">★ '+r[1]+'</span>':'')+'</div>'+
       (r[4]?'<p class="faz"><b>O que faz:</b> '+esc(r[4])+'</p>':'')+
       (r[11]?'<p class="ocu-m"><b>Por que está oculto:</b> '+esc(r[11])+'</p>':'')+como(r)+

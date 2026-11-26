@@ -419,7 +419,7 @@ def pagina_riscos(itens):
         ids = ''.join(f'<code>{html.escape(y[0])}</code> ' for y in u['xs'])
         lista_ids = (f'<details><summary>Ver os {n} identificadores</summary><p class="ids">{ids}</p></details>' if n > 1
                      else f'<p class="sub">Identificador no GitHub (para denúncia): <code>{html.escape(x[0])}</code></p>')
-        return (f'<div class="card oculto perigo"><div class="ct"><span class="semlink">{html.escape(u["nome"])}</span></div>'
+        return (f'<div class="card ocu-card perigo"><div class="ct"><span class="semlink">{html.escape(u["nome"])}</span></div>'
                 f'<div class="bs">' + (f'<span class="b tp-{x[19]}">{TIPO_NOME[x[19]]}</span>' if x[19] else '') +
                 ('<span class="b susp-b">❓ Suspeito</span>' if suspeito else '<span class="b ocu-b">🚫 Sem link</span>') +
                 f'<span class="b gr">{html.escape(u["cat"])}</span>{rede}'
