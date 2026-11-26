@@ -33,6 +33,7 @@
   });
   var t;q.addEventListener('input',function(){clearTimeout(t);t=setTimeout(filtra,150)});
   mais.addEventListener('click',function(){desenha(false)});
+  if(window.LISTA){dados=window.LISTA;filtra();return}
   fetch('lista.json').then(function(r){return r.json()}).then(function(d){dados=d;filtra()})
     .catch(function(){lst.innerHTML='<p class="nota">Não consegui carregar a lista.</p>'});
 })();

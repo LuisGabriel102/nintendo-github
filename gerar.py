@@ -97,7 +97,14 @@ def card(cols, cab):
     return (f'<div class="card morto" data-s="{busca}"><div class="ct">{inline(cols[0])}</div>'
             f'<p><b>O que era:</b> {inline(cols[1])}</p><p><b>Situação:</b> {inline(cols[2])}</p></div>')
 
-linhas = open(MD, encoding='utf-8').read().split('\n')
+_txt = open(MD, encoding='utf-8').read()
+for _a, _b in [(' É onde as suas traduções entram.', ' É por ele que traduções e mods entram no jogo.'),
+               (' (o que você usa para destrancar e trancar)', ' (abrir e reempacotar jogos)'),
+               (' **Muito útil para organizar a sua pasta de traduções.**', ' **Muito útil para organizar pastas de jogos e traduções.**'),
+               ('(para gravar/capturar prints de tradução)', '(para gravar e tirar prints)'),
+               ('com as chaves de `~/.switch`', 'com as suas chaves')]:
+    _txt = _txt.replace(_a, _b)
+linhas = _txt.split('\n')
 # pula o cabeçalho pessoal (até o primeiro ---)
 i0 = linhas.index('---') + 1
 linhas = linhas[i0:]
@@ -282,6 +289,6 @@ if GH:
     open(os.path.join(AQUI, 'lista.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Lista completa — Nintendo no GitHub', css=CSS,
                    nav='<a href="index.html" class="lc">← Guia explicado</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='', h1='Lista completa', sub=f'{len(itens)} repositórios ligados à Nintendo, do mais estrelado ao menos',
-                   js=open(os.path.join(AQUI, 'lista.js'), encoding='utf-8').read(), ph=f'{len(itens)} repositórios'))
+                   js='window.LISTA=' + json.dumps(itens, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ';\n' + open(os.path.join(AQUI, 'lista.js'), encoding='utf-8').read(), ph=f'{len(itens)} repositórios'))
     print('lista:', len(itens))
 print('secoes:', len(secoes))
