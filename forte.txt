@@ -1,0 +1,134 @@
+# repo | o que faz bem (pontos fortes) — usado no card e no modo Tinder
+Atmosphere-NX/Atmosphere | Atualiza rápido a cada firmware novo; LayeredFS deixa trocar arquivos do jogo sem tocar no original; emuMMC isola tudo do sistema oficial; cheats e amiibo embutidos.
+CTCaer/hekate | Interface por toque; backup e restauração de NAND; cria emuMMC em minutos; monta o SD no PC pelo cabo (UMS); mostra temperatura e bateria.
+THZoria/NX_Firmware | Sempre tem a última versão oficial; arquivos verificados; ideal para atualizar emuMMC pelo Daybreak.
+suchmememanyskill/TegraExplorer | Salva consoles com problema: mexe na NAND fora do sistema, roda scripts, formata e apaga com segurança.
+eliboa/TegraRcmGUI | Um clique para injetar o payload; instala o driver USB sozinho; lembra o último payload.
+MenosGrante/Rekado | Dispensa PC: injeta pelo celular; verifica número de série.
+eliboa/NxNandManager | Abre backups de NAND como pasta; redimensiona; cria emuNAND no Windows.
+SciresM/hactool | Leve, rápido e confiável; suporta quase todo formato do Switch; fácil de automatizar em script.
+jakcron/nstool | Mais atualizado que o hactool; mostra informações completas (versões, SDK, permissões).
+DarkMatterCore/nxdumptool | Faz dump direto no console, sem PC; tira XCI, NSP, ticket e RomFS separado.
+nicoboss/nsz | Reduz bastante o tamanho sem perder nada; verifica integridade; os instaladores aceitam NSZ direto.
+julesontheroad/NSC_BUILDER | Faz tudo com NSP/XCI: junta base+update+DLC, remove ticket, troca chave, verifica; tem modo em lote.
+blawar/nut | Organiza a coleção e serve pela rede ou USB para o console.
+a1ex4/ownfoil | Biblioteca automática com interface web; atualizações e DLCs organizados sozinhos.
+Huntereb/Awoo-Installer | Simples e direto; instala por SD, USB e rede; aceita NSZ/XCZ.
+XorTroll/Goldleaf | Várias ferramentas num app: instalador, explorador, tickets, contas, navegador web.
+NaGaa95/sphaira | Menu bonito e rápido com loja, instalador, FTP e gerenciador de arquivos num só lugar; recebe atualização frequente.
+ihaveamac/ninfs | Navega dentro de jogos de 3DS/Switch como se fossem pastas, sem extrair nada.
+Adubbz/Ghidra-Switch-Loader | Abre executáveis do Switch no Ghidra com símbolos; essencial para achar texto/fonte no código.
+KillzXGaming/Switch-Toolbox | Abre e reinjeta texturas, modelos, fontes, layouts e textos dos jogos Nintendo; prévia visual de tudo; exporta/importa PNG e DDS.
+FanTranslatorsInternational/Kuriimu2 | Feito para tradução: editor de texto com prévia, fontes e imagens; plugins para muitos jogos de 3DS/Switch/DS.
+IcySon55/Kuriimu | Ainda abre formatos que o Kuriimu2 não tem; leve.
+zeldamods/oead | Rápido (feito em C++); converte SARC/Yaz0/BYML/AAMP em Python; perfeito para automatizar centenas de arquivos.
+kinnay/Nintendo-File-Formats | Documentação clara dos formatos; economiza horas de engenharia reversa.
+exelix11/SwitchThemeInjector | Cria temas com prévia; versão web e no console; não precisa mexer em arquivos do sistema na mão.
+Raytwo/ARCropolis | Carrega mods do Smash Ultimate sem reempacotar o arquivo gigante do jogo.
+switchbrew/nx-hbmenu | O padrão: estável e leve.
+XorTroll/uLaunch | Substitui o HOME Menu com temas, pastas e acesso direto a homebrew.
+fortheusers/hb-appstore | Baixa e atualiza homebrew com um toque; mostra descrição e prints.
+HamletDuFromage/aio-switch-updater | Atualiza CFW, hekate, firmware e cheats de dentro do console, sem tirar o cartão SD.
+J-D-K/JKSV | Backup de saves rápido, com pastas por jogo; envia para Google Drive/WebDAV.
+BernardoGiordano/Checkpoint | Simples; funciona igual no Switch e no 3DS.
+WerWolv/EdiZon | Edita saves com scripts prontos e busca valores na memória do jogo.
+WerWolv/Tesla-Menu | Overlay por cima do jogo com atalho de botões; base de vários módulos.
+ppkantorski/Ultrahand-Overlay | Overlay moderno e personalizável; liga/desliga módulos, comandos próprios, temas.
+retronx-team/sys-clk | Overclock por jogo, com perfis para portátil/dock; melhora FPS em jogos pesados.
+spacemeowx2/ldn_mitm | Multiplayer local pela internet com amigos (com XLink Kai/LAN).
+ndeadly/MissionControl | Controles de PS4, PS5, Xbox, Wii U Pro e outros por Bluetooth, sem adaptador, com vibração.
+cathery/sys-con | Controles USB baratos de terceiros funcionando no Switch.
+exelix11/SysDVR | Vê e grava a tela do jogo no PC por USB ou Wi-Fi, com som; ótimo para tirar prints de revisão.
+mtheall/ftpd | Copia arquivos pelo Wi-Fi; funciona no Switch e no 3DS; sem configuração.
+joel16/NX-Shell | Gerenciador de arquivos completo, com visualizador de imagens e textos.
+tallbl0nde/NX-Activity-Log | Tempo de jogo exato, por dia e por jogo, com gráficos.
+XITRIX/Moonlight-Switch | Joga os jogos do PC no Switch com baixa latência.
+EasyRPG/Player | Roda RPG Maker 2000/2003 em quase tudo, com fonte e tradução.
+switchbrew/libnx | Biblioteca completa e documentada; base de quase todo homebrew.
+LNPANDY/NX2Apple | Interface de um clique: sem terminal.
+strato-emu/strato | Continuação ativa do Skyline para Android.
+Davidobot/BetterJoy | Joy-Con e Pro Controller como controle de Xbox no PC, com giroscópio.
+olliz0r/sys-botbase | Controle do console pela rede; base de bots e automação.
+kinnay/NintendoClients | Fala com os servidores reais da Nintendo; ótimo para pesquisa e servidores alternativos.
+samuelthomas2774/nxapi | Mostra o que você joga no Discord e acessa dados do Nintendo Switch Online.
+LumaTeam/Luma3DS | Estável há anos; menu Rosalina com cheats, prints, FTP e LayeredFS.
+SciresM/boot9strap | Desbloqueio permanente e à prova de atualizações.
+hacks-guide/Guide_3DS | Passo a passo claro e mantido pela comunidade; difícil errar seguindo.
+d0k3/GodMode9 | Acesso total: dump de cartucho, NAND, CIA, scripts; protege contra apagar arquivo importante.
+Universal-Team/Universal-Updater | Loja de homebrew fácil e rápida no próprio 3DS.
+astronautlevel2/Anemone3DS | Temas e telas de boot com prévia, baixando direto do ThemePlaza.
+profi200/open_agb_firm | GBA com hardware real do 3DS: compatibilidade perfeita, com filtros e saves.
+dnasdw/3dstool | Extrai e reconstrói ROMs de 3DS completas — padrão em tradução de 3DS.
+3DSGuy/Project_CTR | makerom e ctrtool: criar e inspecionar CIA/CCI do jeito oficial.
+azahar-emu/azahar | Junta o melhor dos forks do Citra; roda quase toda a biblioteca do 3DS em alta resolução no PC e Android.
+wheremyfoodat/Panda3DS | Leve, roda em muitos aparelhos e no navegador.
+kwsch/pk3DS | Randomizador e editor completo dos Pokémon de 3DS.
+cemu-project/Cemu | Roda a maior parte do Wii U em 4K/60 fps; graphic packs prontos; suporte a Linux.
+cemu-project/cemu_graphic_packs | Resolução, FPS, widescreen e correções prontos, é só ligar.
+wiiu-env/Aroma | Homebrew permanente com plugins (FTP, mods, prints, Pretendo).
+GaryOderNichts/udpih | Recupera Wii U travados e libera homebrew usando só um Raspberry Pi Pico.
+GaryOderNichts/Bloopair | Controles de outros consoles no Wii U por Bluetooth.
+dumpling-app/dumpling | Dump de jogos, updates, DLC, saves e chaves num assistente só.
+Xpl0itU/WiiUDownloader | Baixa conteúdo oficial direto da Nintendo, multiplataforma.
+PretendoNetwork/.github | Devolve o online de Mario Kart 8, Splatoon e outros no Wii U e 3DS.
+dolphin-emu/dolphin | Roda quase todo GameCube e Wii, em 4K, widescreen, com netplay e controles reais; também no Android.
+fail0verflow/hbc | O Homebrew Channel clássico do Wii, código aberto.
+DacoTaco/priiloader | Evita e conserta brick; boot direto em homebrew.
+wiidev/usbloadergx | Carrega backups de HD USB com capas e configurações por jogo.
+WiiLink24/WiiLink24-Patcher | Devolve canais oficiais do Wii que tinham sido desligados.
+devkitPro/libogc | Base de todo homebrew de Wii e GameCube.
+webhdx/PicoBoot | Modchip barato e fácil de instalar no GameCube.
+encounter/aurora | Facilita portar jogos de GameCube/Wii decompilados para o PC.
+melonDS-emu/melonDS | O mais preciso para DS: Wi-Fi local, DSi e alta resolução 3D.
+rafaelvcaetano/melonDS-android | melonDS bem adaptado ao toque e às duas telas do celular.
+TASEmulators/desmume | Ferramentas de depuração (memória, tiles, paletas) muito úteis para romhack.
+DS-Homebrew/TWiLightMenu | Menu bonito no estilo DSi/3DS; roda jogos de DS do SD, além de emuladores de NES/GB/SNES.
+DS-Homebrew/nds-bootstrap | Roda .nds do SD com alta compatibilidade e saves.
+pleonex/tinke | Abre quase todo formato de jogo de DS (textos, fontes, gráficos) — ferramenta clássica de tradução.
+AdAstra-LD/DS-Pokemon-Rom-Editor | Edita mapas, scripts, textos e dados dos Pokémon de DS.
+mgba-emu/mgba | Preciso e rápido; depurador, visualizador de memória/tiles e script Lua; roda em tudo.
+LIJI32/SameBoy | Precisão máxima de GB/GBC; ótimo depurador; filtros bonitos.
+skylersaleh/SkyEmu | GB, GBC, GBA e DS num app leve, inclusive no navegador.
+Baekalfen/PyBoy | Controla o Game Boy por Python: ótimo para bots, IA e testes automáticos.
+gbdev/pandocs | Explica cada registrador e detalhe do hardware do Game Boy.
+gbdev/rgbds | Montador oficial da comunidade; compila as decompilações de Pokémon.
+gbdk-2020/gbdk-2020 | Faz jogos de Game Boy em C, com exemplos.
+GValiente/butano | Motor de GBA moderno, rápido e bem documentado.
+Rangi42/tilemap-studio | Edita tilemaps de vários consoles; útil para trocar texto em imagens.
+project64/project64 | Clássico, estável e fácil de usar no Windows.
+Rosalie241/RMG | Interface moderna sobre o Mupen64Plus; configurações simples; Netplay.
+ares-emulator/ares | Precisão alta em vários consoles num só programa.
+gopher64/gopher64 | Muito compatível, rápido e fácil.
+N64Recomp/N64Recomp | Transforma jogo de N64 em programa nativo de PC.
+Zelda64Recomp/Zelda64Recomp | Majora's Mask nativo: widescreen, 60 fps+, mods, sem emulador.
+HarbourMasters/Shipwright | Ocarina of Time nativo com randomizer, melhorias, mods e versão para Switch.
+2ship2harkinian/2ship2harkinian | Majora's Mask nativo com melhorias de qualidade de vida.
+HarbourMasters/Starship | Star Fox 64 nativo, widescreen e alta taxa de quadros.
+n64decomp/sm64 | Código do Mario 64 completo, base de todos os ports e mods.
+sm64pc/sm64ex | Mario 64 no PC com 60 fps, widescreen e mods.
+coop-deluxe/sm64coopdx | Mario 64 multiplayer online, com muitos mods.
+zeldaret/oot | Ocarina of Time compilável idêntico ao original; base do Ship of Harkinian.
+snesrev/zelda3 | A Link to the Past nativo, com widescreen e melhorias.
+snes9xgit/snes9x | Leve, roda em qualquer coisa, compatibilidade ótima.
+bsnes-emu/bsnes | Precisão alta com bom desempenho.
+devinacker/bsnes-plus | Depurador completo (memória, VRAM, breakpoints) — padrão de tradução de SNES.
+SourMesen/Mesen2 | O melhor depurador para romhack de NES/SNES/GB/GBA; preciso; muitas ferramentas visuais.
+TASEmulators/fceux | Ferramentas de hacking e TAS para NES; editor hexa e PPU viewer.
+kwsch/PKHeX | Edita saves de todos os Pokémon, verifica legalidade e transfere entre gerações.
+architdate/PKHeX-Plugins | Gera times legais automaticamente a partir de texto do Showdown.
+kwsch/pkNX | Edita dados das ROMs de Pokémon de Switch e randomiza.
+rh-hideout/pokeemerald-expansion | Coloca mecânicas e Pokémon modernos no Emerald; base de muitos romhacks.
+pret/pokeemerald | Emerald em código C: dá para traduzir e modificar sem limites de espaço.
+pret/pokecrystal | Crystal em assembly bem comentado; base de romhacks.
+huderlem/porymap | Editor de mapas visual para as decompilações de GBA.
+PokeAPI/pokeapi | Dados completos e gratuitos de Pokémon, com nomes em vários idiomas.
+pagefaultgames/pokerogue | Roguelite viciante no navegador, sem instalar nada.
+HiddenRamblings/TagMo | Lê e grava amiibo em etiquetas NFC baratas pelo celular.
+AmiiboDB/Amiibo | Todos os amiibo num lugar, prontos para TagMo ou emulação.
+libretro/RetroArch | Um programa para todos os consoles: shaders, conquistas, netplay, rewind e funciona em quase todo aparelho.
+TASEmulators/BizHawk | Script Lua, ferramentas de TAS e busca de memória em vários consoles.
+Swordfish90/Lemuroid | Interface simples no Android, sem configuração; salva na nuvem.
+Provenance-Emu/Provenance | Muitos consoles no iPhone e Apple TV.
+GerbilSoft/rom-properties | Mostra Title ID, nome e ícone das ROMs direto no Explorador do Windows.
+Abdess/retrobios | BIOS já nas pastas certas para cada emulador.
+nostalgic-css/NES.css | Visual 8-bit pronto para sites.
