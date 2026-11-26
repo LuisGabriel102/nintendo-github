@@ -95,6 +95,7 @@
         '<div class="meta">' + (qd ? '<span class="quando ' + qd.c + '">' + qd.t + "</span>" : "") +
         '<a class="baixar" href="' + esc(x.rel || "https://github.com/" + x.n + "/releases") + '" target="_blank" rel="noopener">⬇ ' + (x.rel ? "Baixar " + esc(x.relt) : "Releases") + "</a></div></div>";
     }).join("") || '<p class="nota">Nada da seleção bate com a busca.</p>';
+    if (window.GLOS) GLOS.marcar(lst);
   }
 
   document.addEventListener("click", function (e) {

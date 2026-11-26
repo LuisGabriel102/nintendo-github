@@ -202,6 +202,7 @@
       el.innerHTML = cardHTML(fila[i]);
       palco.appendChild(el);
       if (!i) arrastavel(el);
+      if (window.GLOS) GLOS.marcar(el);
     }
   }
 

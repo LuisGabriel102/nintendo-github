@@ -165,3 +165,4 @@ a.tile:active,a.tile:hover{border-color:var(--c)}
 #faixa-ocu[hidden]{display:none}
 #faixa-ocu b{color:var(--veto)}
 #faixa-ocu button{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:4px 10px;margin-top:6px;cursor:pointer}
+.lg-b{border-color:var(--blue);color:var(--blue)}

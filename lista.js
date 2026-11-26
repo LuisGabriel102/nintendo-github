@@ -1,14 +1,16 @@
 /* lista.js — lista completa. Item: [nome, estrelas, arquivado, grupo, o que faz, faz bem, atualizado, release, tag, capa] */
 (function(){
   var lst=document.getElementById('lst'),mais=document.getElementById('mais'),q=document.getElementById('q'),nada=document.getElementById('nada');
-  var dados=[],filtrado=[],mostrados=0,cat='Todos',ordem='s',PASSO=40,verOcu=false;
+  var dados=[],filtrado=[],mostrados=0,cat='Todos',ordem='s',PASSO=40,verOcu=false,lg='';
+  var LGN={zh:'🇨🇳 Chinês',ja:'🇯🇵 Japonês',ko:'🇰🇷 Coreano'};
+  function origem(r){return r[21]?'<span class="b lg-b">'+LGN[r[21]]+'</span>':''}
   function norm(t){return (t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
   function esc(t){return (t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function card(r){
     if(r[10])return cardOcu(r);
     var qd=window.quandoTxt(r[6],r[2]);
     return '<div class="card"><div class="ct"><a href="https://github.com/'+esc(r[0])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a></div>'+
-      '<div class="bs"><span class="b st">★ '+r[1]+'</span><span class="b gr">'+esc(r[3])+'</span>'+(r[2]?'<span class="b arq">ARQ</span>':'')+'<button class="sel" type="button" data-sel="'+esc(r[0])+'"></button></div>'+
+      '<div class="bs"><span class="b st">★ '+r[1]+'</span><span class="b gr">'+esc(r[3])+'</span>'+origem(r)+(r[2]?'<span class="b arq">ARQ</span>':'')+'<button class="sel" type="button" data-sel="'+esc(r[0])+'"></button></div>'+
       (r[4]?'<p class="faz">'+esc(r[4])+'</p>':'')+
       (r[5]?'<p class="forte"><b>👍 Faz bem:</b> '+esc(r[5])+'</p>':'')+
       (r[19]?'<div class="bs">'+selo(r)+'</div>'+como(r):'')+
@@ -31,7 +33,7 @@
   function desenha(reset){
     if(reset){lst.innerHTML='';mostrados=0}
     var h='';for(var i=mostrados;i<Math.min(mostrados+PASSO,filtrado.length);i++)h+=card(filtrado[i]);
-    lst.insertAdjacentHTML('beforeend',h);if(window.SEL)SEL.pintar(lst);mostrados=Math.min(mostrados+PASSO,filtrado.length);
+    lst.insertAdjacentHTML('beforeend',h);if(window.SEL)SEL.pintar(lst);if(window.GLOS)GLOS.marcar(lst);mostrados=Math.min(mostrados+PASSO,filtrado.length);
     mais.hidden=mostrados>=filtrado.length;
     mais.textContent='Mostrar mais ('+(filtrado.length-mostrados)+' restantes)';
     nada.hidden=filtrado.length>0;
@@ -42,6 +44,7 @@
       if(r[10]&&!verOcu&&cat!=='Ocultos')return false;
       if(cat==='Ocultos'){if(!r[10])return false}else if(cat!=='Todos'&&r[3]!==cat)return false;
       if(ordem==='b'&&!r[7])return false;
+      if(lg&&r[21]!==lg)return false;
       var s=r._s||(r._s=norm(r[0]+' '+r[3]+' '+r[4]+' '+r[5]+' '+(r[11]||'')+' '+(r[12]||'')+' '+(r[13]||'')+' '+(r[14]||'')));
       return termos.every(function(x){return s.indexOf(x)>=0});
     });
@@ -58,6 +61,7 @@
   }
   grupoBotoes('.filtros button[data-c]','data-c',function(v){cat=v});
   grupoBotoes('.filtros button[data-o]','data-o',function(v){ordem=v});
+  grupoBotoes('.filtros button[data-lg]','data-lg',function(v){lg=v});
   var bo=document.querySelector('[data-ocu]');
   function ocu(on){verOcu=on;if(bo)bo.setAttribute('aria-pressed',on);filtra();}
   if(bo)bo.addEventListener('click',function(){ocu(!verOcu)});

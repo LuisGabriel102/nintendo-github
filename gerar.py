@@ -229,7 +229,7 @@ def curto(t):
 
 CSS = open(os.path.join(AQUI, 'estilo.css'), encoding='utf-8').read()
 TEMPO = open(os.path.join(AQUI, 'tempo.js'), encoding='utf-8').read()
-SJS = open(os.path.join(AQUI, 'selecao.js'), encoding='utf-8').read()
+SJS = open(os.path.join(AQUI, 'selecao.js'), encoding='utf-8').read() + open(os.path.join(AQUI, 'glossario.js'), encoding='utf-8').read()
 JS = TEMPO + SJS + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read()
 
 TJS = open(os.path.join(AQUI, 'tinder.js'), encoding='utf-8').read()
@@ -240,7 +240,7 @@ DSC = {'Removidos': 'saíram do GitHub', 'Switch': 'CFW, homebrew, tradução', 
        'Multi': 'RetroArch e cia.', 'Tradução': 'o que usar'}
 def ncards(s): return ''.join(s[2]).count('<div class="card')
 TOTAL = sum(ncards(s) for s in secoes)
-nav = ('<a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="#tinder" id="t-abrir" class="lc">🃏 Modo Tinder</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="#comece">Comece</a>' +
+nav = ('<a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="glossario.html" class="lc">📖 Glossário</a><a href="#tinder" id="t-abrir" class="lc">🃏 Modo Tinder</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="#comece">Comece</a>' +
        ''.join(f'<a href="#s{s[0]}">{html.escape(curto(s[1]))}</a>' for s in secoes) + '<a href="lista.html" class="lc">Lista completa →</a>')
 tiles = '<div class="tiles">' + ''.join(
     f'<a class="tile c{i % 7}" href="#s{s[0]}"><span class="num">{ncards(s) or "✓"}</span><span class="lbl">{html.escape(curto(s[1]))}</span><span class="dsc">{DSC.get(curto(s[1]), "")}</span></a>'
@@ -589,7 +589,7 @@ if REPOS:
                       if (perigo and (cat == 'Malware disfarçado' or tr == 'Malware')) else ''])
     for x in itens:
         t = tipo_de(x[12], x[14])
-        x[19:] = [t, como_de(x[12], x[14]) if t else '']
+        x[19:] = [t, como_de(x[12], x[14]) if t else '', (REPOS.get(x[0].lower()) or {}).get('lg', '')]
     itens.sort(key=lambda x: -x[1])
     fora = sum(1 for x in itens if x[10])
     json.dump(itens, open(os.path.join(AQUI, 'lista.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
@@ -602,6 +602,11 @@ if REPOS:
     ordem = ('<div class="filtros ordem"><span>Ordenar:</span><button data-o="s" aria-pressed="true">★ Estrelas</button>'
              '<button data-o="p" aria-pressed="false">🕒 Atualizados</button><button data-o="b" aria-pressed="false">⬇ Com download</button>'
              f'<button data-ocu aria-pressed="false">🚫 Mostrar ocultos ({fora})</button></div>')
+    _lg = {l: sum(1 for x in itens if x[21] == l and not x[10]) for l in ('zh', 'ja', 'ko')}
+    ordem += ('<div class="filtros ordem"><span>Origem:</span><button data-lg="" aria-pressed="true">🌍 Todas</button>'
+              f'<button data-lg="zh" aria-pressed="false">🇨🇳 Chinês <small>{_lg["zh"]}</small></button>'
+              f'<button data-lg="ja" aria-pressed="false">🇯🇵 Japonês <small>{_lg["ja"]}</small></button>'
+              f'<button data-lg="ko" aria-pressed="false">🇰🇷 Coreano <small>{_lg["ko"]}</small></button></div>')
     corpo2 = (f'<section class="panel lista"><p>{NVIS} projetos ligados à Nintendo, explicados em português. '
               f'Outros {fora} ficam ocultos porque só usam o nome ou o visual (temas, bots de Pokémon GO, decompiladores genéricos…) — '
               'toque em <b>🚫 Mostrar ocultos</b> para ver todos, com o motivo de cada um. '
@@ -611,7 +616,7 @@ if REPOS:
               '<button id="mais" class="mais">Mostrar mais</button></section>')
     open(os.path.join(AQUI, 'lista.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Lista completa — Nintendo no GitHub', css=CSS,
-                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='',
+                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="glossario.html" class="lc">📖 Glossário</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='',
                    h1='Lista completa', sub=f'{NVIS} projetos explicados em português (+{fora} ocultos) · o que faz, o que faz bem, quando foi atualizado e onde baixar',
                    js='window.LISTA=' + json.dumps(itens, ensure_ascii=False, separators=(',', ':')).replace('</', '<' + chr(92) + '/') + ';' + chr(10) + TEMPO + SJS +
                       open(os.path.join(AQUI, 'lista.js'), encoding='utf-8').read(), ph=f'{len(itens)} projetos'))
@@ -643,18 +648,26 @@ corpo3 = (
 if REPOS:
     open(os.path.join(AQUI, 'numeros.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Números — Nintendo no GitHub', css=CSS,
-                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="lista.html" class="lc">Lista completa</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="minha.html">⭐ Minha seleção</a>',
+                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="glossario.html" class="lc">📖 Glossário</a><a href="lista.html" class="lc">Lista completa</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="minha.html">⭐ Minha seleção</a>',
                    corpo=NUM, tjs='', h1='Nintendo no GitHub em números', sub='Levantamento de 26/11/2026 · tudo o que foi encontrado, inclusive o que ficou oculto',
                    js=TEMPO + SJS + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read(), ph='na página'))
 if REPOS:
     open(os.path.join(AQUI, 'riscos.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Riscos e lei — Nintendo no GitHub', css=CSS,
-                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="numeros.html" class="lc">📊 Números</a>',
+                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="glossario.html" class="lc">📖 Glossário</a><a href="numeros.html" class="lc">📊 Números</a>',
                    corpo=RISC, tjs='', h1='⚖️ Pirataria, golpes e a lei', sub='O que é crime, o que é risco, e as ferramentas que ficaram de fora do site',
                    js=TEMPO + SJS + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read(), ph='na página'))
+open(os.path.join(AQUI, 'glossario.html'), 'w', encoding='utf-8').write(
+    PAG.format(tit='Glossário — Nintendo no GitHub', css=CSS,
+               nav='<a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="index.html" class="lc">← Guia explicado</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="numeros.html" class="lc">📊 Números</a>',
+               corpo='<section class="panel"><p>As palavras técnicas que aparecem no site, explicadas para quem nunca mexeu com videogame. '
+                     'Em qualquer página, as palavras com <span class="termo">sublinhado pontilhado</span> abrem essa explicação ao tocar.</p></section>'
+                     '<section class="panel"><div id="gl-todos" class="gl-lista"></div></section>',
+               tjs='', h1='📖 Glossário', sub='O que quer dizer cada termo — em português simples',
+               js=TEMPO + SJS + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read(), ph='um termo'))
 open(os.path.join(AQUI, 'minha.html'), 'w', encoding='utf-8').write(
     PAG.format(tit='Minha seleção — Nintendo no GitHub', css=CSS,
-               nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="lista.html" class="lc">Lista completa</a><a href="index.html#tinder">🃏 Modo Tinder</a>',
+               nav='<a href="index.html" class="lc">← Guia explicado</a><a href="lista.html#ocultos" class="ocu-nav">🚫 Ocultos</a><a href="glossario.html" class="lc">📖 Glossário</a><a href="lista.html" class="lc">Lista completa</a><a href="index.html#tinder">🃏 Modo Tinder</a>',
                corpo=corpo3, tjs='', h1='Minha seleção', sub='Os projetos que você marcou com ☆, guardou no Tinder ou adicionou aqui',
                js=TEMPO + SJS + open(os.path.join(AQUI, 'minha.js'), encoding='utf-8').read(), ph='na sua seleção'))
 print('secoes:', len(secoes))
