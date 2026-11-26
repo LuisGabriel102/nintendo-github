@@ -22,6 +22,21 @@ for _l in open(os.path.join(AQUI, 'forte.txt'), encoding='utf-8'):
     if '|' in _l and not _l.startswith('#'):
         _k, _v = _l.split('|', 1); FORTE[_k.strip()] = _v.strip()
 
+REPOS = {}
+_rp = os.path.join(AQUI, 'dados', 'repos.json')
+if os.path.exists(_rp):
+    REPOS = {k.lower(): v for k, v in json.load(open(_rp, encoding='utf-8')).items()}
+
+def meta_html(nome):
+    r = REPOS.get(nome.lower())
+    if not r: return '', ''
+    rel = r.get('rel') or ''
+    bx = (f'<a class="baixar" href="{html.escape(rel, quote=True)}" target="_blank" rel="noopener">⬇ Baixar {html.escape(r.get("relt") or "")}</a>'
+          if rel else '')
+    quando = f'<span class="quando" data-p="{r.get("p", "")}" data-a="{1 if r.get("arq") else 0}"></span>' if r.get('p') else ''
+    attrs = f' data-p="{r.get("p", "")}" data-rel="{html.escape(rel, quote=True)}" data-capa="{html.escape(r.get("capa") or "", quote=True)}"'
+    return (f'<div class="meta">{quando}{bx}</div>' if (quando or bx) else ''), attrs
+
 # ---------- blocos extras por seção: recomendação + exemplos ----------
 def ex(titulo, codigo):
     return f'<div class="ex"><div class="ex-t">{titulo}</div><pre><code>{html.escape(codigo)}</code></pre></div>'
@@ -91,8 +106,9 @@ def card(cols, cab):
         busca = html.escape((re.sub(r'<[^>]+>', '', repo + ' ' + desc + ' ' + forte)).lower(), quote=True)
         fh = f'<p class="forte"><b>👍 Faz bem:</b> {html.escape(forte)}</p>' if forte else ''
         rp = html.escape(nomes[0], quote=True) if nomes else ''
-        return (f'<div class="card{" r" if r else ""}" data-s="{busca}" data-repo="{rp}"><div class="ct">{inline(repo)}</div>'
-                f'<div class="bs">{est_h}{selo}</div><p class="faz">{inline(desc)}</p>{fh}</div>')
+        mh, at = meta_html(nomes[0]) if nomes else ('', '')
+        return (f'<div class="card{" r" if r else ""}" data-s="{busca}" data-repo="{rp}"{at}><div class="ct">{inline(repo)}</div>'
+                f'<div class="bs">{est_h}{selo}</div><p class="faz">{inline(desc)}</p>{fh}{mh}</div>')
     busca = html.escape(' '.join(cols).lower(), quote=True)
     return (f'<div class="card morto" data-s="{busca}"><div class="ct">{inline(cols[0])}</div>'
             f'<p><b>O que era:</b> {inline(cols[1])}</p><p><b>Situação:</b> {inline(cols[2])}</p></div>')
@@ -212,7 +228,8 @@ def curto(t):
             'Para quem traduz jogos: o que usar': 'Tradução'}.get(t, t)
 
 CSS = open(os.path.join(AQUI, 'estilo.css'), encoding='utf-8').read()
-JS = open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read()
+TEMPO = open(os.path.join(AQUI, 'tempo.js'), encoding='utf-8').read()
+JS = TEMPO + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read()
 
 TJS = open(os.path.join(AQUI, 'tinder.js'), encoding='utf-8').read()
 DSC = {'Removidos': 'saíram do GitHub', 'Switch': 'CFW, homebrew, tradução', '3DS': 'Luma, GodMode9, Azahar',
@@ -254,41 +271,44 @@ open(os.path.join(AQUI, 'index.html'), 'w', encoding='utf-8').write(
                h1='Nintendo no GitHub', sub=f'{TOTAL} projetos explicados em português, com exemplos e recomendações · mais de 2 mil na lista completa'))
 
 # ---------- lista completa ----------
-if GH:
-    import importlib.util
-    seen = {}
-    for f in sorted(glob.glob(os.path.join(GH, '*.json'))):
-        t = os.path.basename(f)[:-5]
-        try: data = json.load(open(f, encoding='utf-8'))
-        except Exception: continue
-        for r in data:
-            seen.setdefault(r['fullName'], dict(r, topics=[]))['topics'].append(t)
-    kw = re.compile(r'nintendo|switch|wii|gamecube|gcn|n64|nes\b|snes|famicom|game ?boy|gba|gbc|nds|\bds\b|3ds|mario|zelda|pok[eé]mon|metroid|kirby|pikmin|smash|splatoon|xenoblade|fire emblem|donkey kong|star ?fox|f-zero|amiibo|joy-?con|banjo|goldeneye|paper mario|animal crossing', re.I)
-    grupos = [('Switch', ['nintendo-switch', 'switch-homebrew', 'homebrew-switch', 'atmosphere', 'joycon']),
-              ('3DS', ['nintendo-3ds', '3ds', '3ds-homebrew']), ('Wii U', ['wiiu', 'wii-u']), ('Wii/GC', ['wii', 'gamecube']),
-              ('DS', ['nintendo-ds', 'nds']), ('Game Boy', ['gba', 'gameboy-advance', 'gameboy', 'gameboy-color']),
-              ('N64', ['n64', 'nintendo-64']), ('SNES', ['snes']), ('NES', ['nes', 'famicom']), ('Virtual Boy', ['virtual-boy']),
-              ('Decomp', ['decompilation']), ('Pokémon', ['pokemon']), ('Zelda', ['zelda']), ('Mario', ['mario']),
-              ('amiibo', ['amiibo']), ('Geral', ['nintendo'])]
-    usado = set(); itens = []
-    for nome, tops in grupos:
-        rows = [r for k, r in seen.items() if k not in usado and any(t in r['topics'] for t in tops)]
-        if nome == 'Decomp' or 'atmosphere' in tops:
-            rows = [r for r in rows if kw.search((r['description'] or '') + ' ' + r['fullName']) or set(r['topics']) - {'decompilation', 'atmosphere'}]
-        for r in rows:
-            usado.add(r['fullName'])
-            itens.append([r['fullName'], r['stargazersCount'], 1 if r['isArchived'] else 0, nome, (r['description'] or '')[:200]])
+GRUPOS = ['Switch', '3DS', 'Wii U', 'Wii/GC', 'DS', 'Game Boy', 'N64', 'SNES', 'NES', 'Virtual Boy', 'Decomp',
+          'Pokémon', 'Zelda', 'Mario', 'amiibo', 'Multi', 'Geral']
+if REPOS:
+    itens = []
+    for r in REPOS.values():
+        if not r.get('k'): continue
+        itens.append([r['n'], r['s'], 1 if r.get('arq') else 0, r.get('g') or 'Geral', r.get('d') or '', r.get('f') or '',
+                      r.get('p') or '', r.get('rel') or '', r.get('relt') or '', r.get('capa') or ''])
     itens.sort(key=lambda x: -x[1])
+    fora = sum(1 for r in REPOS.values() if not r.get('k'))
     json.dump(itens, open(os.path.join(AQUI, 'lista.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-    cats = ['Todos'] + [g[0] for g in grupos]
-    filtros = ''.join(f'<button data-c="{c}" aria-pressed="{"true" if c == "Todos" else "false"}">{c}</button>' for c in cats)
-    corpo2 = (f'<section class="panel lista"><p>{len(itens)} repositórios encontrados pelos tópicos do GitHub, do mais estrelado ao menos. '
-              'As descrições são as originais dos autores (quase todas em inglês). As explicações em português ficam no <a href="index.html">guia</a>.</p>'
-              f'<div class="filtros">{filtros}</div><div id="lst" class="cards"></div>'
+    cont = {g: sum(1 for x in itens if x[3] == g) for g in GRUPOS}
+    cats = ['Todos'] + [g for g in GRUPOS if cont[g]]
+    filtros = ''.join(f'<button data-c="{c}" aria-pressed="{"true" if c == "Todos" else "false"}">{c}'
+                      f'{"" if c == "Todos" else f" <small>{cont[c]}</small>"}</button>' for c in cats)
+    ordem = ('<div class="filtros ordem"><span>Ordenar:</span><button data-o="s" aria-pressed="true">★ Estrelas</button>'
+             '<button data-o="p" aria-pressed="false">🕒 Atualizados</button><button data-o="b" aria-pressed="false">⬇ Com download</button></div>')
+    corpo2 = (f'<section class="panel lista"><p>{len(itens)} projetos ligados à Nintendo, explicados em português. '
+              f'Saíram {fora} que só usavam o nome (temas, bots de Pokémon GO, decompiladores genéricos…). '
+              'Os mais importantes têm explicação maior e exemplos no <a href="index.html">guia</a>.</p>'
+              f'<div class="filtros">{filtros}</div>{ordem}<div id="lst" class="cards"></div>'
               '<button id="mais" class="mais">Mostrar mais</button></section>')
     open(os.path.join(AQUI, 'lista.html'), 'w', encoding='utf-8').write(
         PAG.format(tit='Lista completa — Nintendo no GitHub', css=CSS,
-                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='', h1='Lista completa', sub=f'{len(itens)} repositórios ligados à Nintendo, do mais estrelado ao menos',
-                   js='window.LISTA=' + json.dumps(itens, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ';\n' + open(os.path.join(AQUI, 'lista.js'), encoding='utf-8').read(), ph=f'{len(itens)} repositórios'))
-    print('lista:', len(itens))
+                   nav='<a href="index.html" class="lc">← Guia explicado</a><a href="index.html#tinder">🃏 Modo Tinder</a>', corpo=corpo2, tjs='',
+                   h1='Lista completa', sub=f'{len(itens)} projetos explicados em português · o que faz, o que faz bem, quando foi atualizado e onde baixar',
+                   js='window.LISTA=' + json.dumps(itens, ensure_ascii=False, separators=(',', ':')).replace('</', '<' + chr(92) + '/') + ';' + chr(10) + TEMPO +
+                      open(os.path.join(AQUI, 'lista.js'), encoding='utf-8').read(), ph=f'{len(itens)} projetos'))
+    # markdown da lista completa (PC)
+    md = ['# Lista completa — projetos Nintendo no GitHub', '',
+          f'Atualizada em 26/11/2026. {len(itens)} projetos, explicados em português. ★ = estrelas. ARQ = arquivado.', '']
+    for g in GRUPOS:
+        xs = [x for x in itens if x[3] == g]
+        if not xs: continue
+        md += [f'## {g} ({len(xs)})', '', '| ★ | Projeto | O que faz | O que faz bem | Atualizado |', '|--:|---|---|---|---|']
+        for x in xs:
+            md.append(f"| {x[1]} | [{x[0]}](https://github.com/{x[0]}){' **ARQ**' if x[2] else ''} | {x[4].replace('|', '/')} | {x[5].replace('|', '/')} | {x[6]} |")
+        md.append('')
+    open(os.path.join(os.path.dirname(AQUI), 'GITHUB-NINTENDO-LISTA-COMPLETA.md'), 'w', encoding='utf-8').write(chr(10).join(md))
+    print('lista:', len(itens), 'fora:', fora)
 print('secoes:', len(secoes))

@@ -36,6 +36,9 @@
     ".t-capa .t-img{position:relative;max-width:94%;max-height:88%;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.3);background:var(--surface)}",
     ".t-capa .t-sem{position:relative;text-align:center}",
     ".t-capa .t-img+.t-sem{display:none}",
+    ".t-capa .t-img.t-shot{max-height:94%;object-fit:contain;background:transparent;box-shadow:0 6px 20px rgba(0,0,0,.35)}",
+    ".t-links{display:flex;flex-wrap:wrap;gap:8px}",
+    ".t-bx{border-color:var(--pt)!important;color:#fff!important;background:var(--pt)!important}",
     ".t-capa .t-ico{font-size:54px;line-height:1}",
     ".t-capa .t-gr2{position:absolute;left:12px;bottom:10px;font-family:var(--font-display);font-weight:700;font-size:13px;background:var(--surface);color:var(--c);border:1px solid var(--c);border-radius:999px;padding:1px 10px}",
     ".t-bloco{display:grid;gap:4px;padding:10px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}",
@@ -86,7 +89,7 @@
         var a = c.querySelector(".ct a"); if (!a) return;
         var desc = c.querySelector(".faz"), fo = c.querySelector(".forte"), sub = c.closest(".in") ? prevH3(c) : "";
         var est = c.querySelector(".st");
-        out.push({ repo: c.getAttribute("data-repo") || a.textContent.trim(), f: fo ? fo.innerHTML.replace(/^<b>[^<]*<\/b>\s*/, "") : "", n: a.textContent.trim(), u: a.href, h: c.querySelector(".ct").innerHTML, d: desc ? desc.innerHTML : "",
+        out.push({ capa: c.getAttribute("data-capa") || "", p: c.getAttribute("data-p") || "", rel: c.getAttribute("data-rel") || "", relt: "", repo: c.getAttribute("data-repo") || a.textContent.trim(), f: fo ? fo.innerHTML.replace(/^<b>[^<]*<\/b>\s*/, "") : "", n: a.textContent.trim(), u: a.href, h: c.querySelector(".ct").innerHTML, d: desc ? desc.innerHTML : "",
           g: g, sub: sub, e: est ? est.textContent.replace("★", "").trim() : "", r: c.classList.contains("r"), arq: !!c.querySelector(".arq"), cor: si });
       });
     });
@@ -103,7 +106,7 @@
     fetch("lista.json").then(function (r) { return r.json(); }).then(function (d) {
       var gs = []; cacheLista = d.map(function (r) {
         if (gs.indexOf(r[3]) < 0) gs.push(r[3]);
-        return { repo: r[0], f: autoForte(r), n: r[0], u: "https://github.com/" + r[0], h: "", d: esc(r[4] || "(sem descrição)"), g: r[3], sub: "", e: String(r[1]), r: false, arq: !!r[2], cor: gs.indexOf(r[3]) };
+        return { capa: r[9] || "", p: r[6] || "", rel: r[7] || "", relt: r[8] || "", repo: r[0], f: esc(r[5] || autoForte(r)), n: r[0], u: "https://github.com/" + r[0], h: "", d: esc(r[4] || "(sem descrição)"), g: r[3], sub: "", e: String(r[1]), r: false, arq: !!r[2], cor: gs.indexOf(r[3]) };
       }); cb(cacheLista);
     }).catch(function () { cb([]); });
   }
@@ -158,8 +161,14 @@
   function capa(x) {
     var rp = String(x.repo || "").split(/[\/#?]/).slice(0, 2).join("/"), dono = rp.split("/")[0];
     if (!/^[\w.-]+\/[\w.-]+$/.test(rp)) return '<div class="t-sem"><div class="t-ico">' + (ICO[x.g] || "🎮") + "</div></div>";
+    var og = "https://opengraph.githubassets.com/1/" + rp, sem = '<div class="t-sem"><div class="t-ico">' + (ICO[x.g] || "🎮") + "</div></div>";
+    if (x.capa) {
+      var c = esc(x.capa);
+      return '<img class="t-fundo" alt="" src="' + c + '" onerror="this.remove()">' +
+        '<img class="t-img t-shot" alt="Imagem de ' + esc(rp) + '" src="' + c + '" onerror="this.onerror=null;this.className=&quot;t-img&quot;;this.src=&quot;' + og + '&quot;">' + sem;
+    }
     return '<img class="t-fundo" alt="" loading="lazy" src="https://github.com/' + dono + '.png?size=120" onerror="this.remove()">' +
-      '<img class="t-img" alt="Capa de ' + esc(rp) + '" src="https://opengraph.githubassets.com/1/' + rp + '" onerror="this.remove()"><div class="t-sem"><div class="t-ico">' + (ICO[x.g] || "🎮") + '</div></div>';
+      '<img class="t-img" alt="Capa de ' + esc(rp) + '" src="' + og + '" onerror="this.remove()">' + sem;
   }
   function cardHTML(x) {
     var c = "var(--" + CORES[x.cor % CORES.length] + ")", cb = CORES[x.cor % CORES.length];
@@ -172,7 +181,9 @@
       (x.sub || x.arq ? '<div class="t-sec">' + esc(x.sub) + (x.arq ? (x.sub ? " · " : "") + "arquivado (sem atualização)" : "") + "</div>" : "") +
       '<div class="t-bloco"><h4>O que faz</h4><div class="t-desc">' + x.d + "</div></div>" +
       (x.f ? '<div class="t-bloco t-bem"><h4>👍 O que faz bem</h4><div class="t-desc">' + x.f + "</div></div>" : "") +
-      '<a class="t-ver" href="' + x.u + '" target="_blank" rel="noopener">Abrir no GitHub ↗</a></div>';
+      (function () { var q = window.quandoTxt && window.quandoTxt(x.p, x.arq); return q ? '<div class="t-sec"><span class="quando ' + q.c + '">' + q.t + "</span></div>" : ""; })() +
+      '<div class="t-links">' + (x.rel ? '<a class="t-ver t-bx" href="' + esc(x.rel) + '" target="_blank" rel="noopener">⬇ Baixar ' + esc(x.relt || "") + "</a>" : "") +
+      '<a class="t-ver" href="' + x.u + '" target="_blank" rel="noopener">Abrir no GitHub ↗</a></div></div>';
   }
 
   function desenhar() {
