@@ -166,3 +166,10 @@ a.tile:active,a.tile:hover{border-color:var(--c)}
 #faixa-ocu b{color:var(--veto)}
 #faixa-ocu button{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:4px 10px;margin-top:6px;cursor:pointer}
 .lg-b{border-color:var(--blue);color:var(--blue)}
+#tema,#busca-topo{display:grid;gap:8px;margin:0 0 10px}
+#tema[hidden],#busca-topo[hidden],#contagem[hidden]{display:none}
+.tema{border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:12px;padding:12px 14px;background:var(--surface)}
+.tema h3{font-size:18px;margin:0 0 4px}
+.tema p{font-size:15px;line-height:1.55}
+#contagem{margin:0 0 10px;font-size:14px;color:var(--muted)}
+.busca-link{margin:0;font-size:14px}

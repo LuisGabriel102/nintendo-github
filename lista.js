@@ -38,18 +38,44 @@
     mais.textContent='Mostrar mais ('+(filtrado.length-mostrados)+' restantes)';
     nada.hidden=filtrado.length>0;
   }
+  // caixa do assunto + contagem, acima da lista
+  var temaBox=document.createElement('div');temaBox.id='tema';temaBox.hidden=true;
+  var conta=document.createElement('p');conta.id='contagem';conta.hidden=true;
+  lst.parentNode.insertBefore(temaBox,lst);lst.parentNode.insertBefore(conta,lst);
+  function campos(r){
+    var N=window.INTELI?INTELI.norm:norm;
+    return r._c||(r._c=[{t:N(r[0]),p:3},{t:N(r[4]),p:2},{t:N(r[5]+' '+(r[20]||'')),p:1},
+      {t:N((r[11]||'')+' '+(r[12]||'')+' '+(r[13]||'')+' '+(r[14]||'')+' '+(r[16]||'')+' '+r[3]),p:1.5}]);
+  }
   function filtra(){
-    var termos=norm(q.value.trim()).split(/\s+/).filter(Boolean);
-    filtrado=dados.filter(function(r){
-      if(r[10]&&!verOcu&&cat!=='Ocultos')return false;
-      if(cat==='Ocultos'){if(!r[10])return false}else if(cat!=='Todos'&&r[3]!==cat)return false;
-      if(ordem==='b'&&!r[7])return false;
-      if(lg&&r[21]!==lg)return false;
-      var s=r._s||(r._s=norm(r[0]+' '+r[3]+' '+r[4]+' '+r[5]+' '+(r[11]||'')+' '+(r[12]||'')+' '+(r[13]||'')+' '+(r[14]||'')));
-      return termos.every(function(x){return s.indexOf(x)>=0});
+    var an=window.INTELI?INTELI.analisar(q.value):{q:norm(q.value.trim()),toks:norm(q.value.trim()).split(/\s+/).filter(Boolean),extras:[],temas:[],pir:0};
+    var busca=!!an.q;
+    temaBox.innerHTML=window.INTELI?INTELI.cartao(an):'';temaBox.hidden=!temaBox.innerHTML;
+    filtrado=[];
+    dados.forEach(function(r){
+      // ocultos: aparecem com o botão, no filtro "Ocultos" ou quando a busca é sobre pirataria/golpe/vírus/catálogo/instalação
+      if(r[10]&&!verOcu&&cat!=='Ocultos'&&!(busca&&an.pir&&r[15]))return;
+      if(cat==='Ocultos'){if(!r[10])return}else if(cat!=='Todos'&&r[3]!==cat&&!(busca&&r[10]))return;
+      if(ordem==='b'&&!r[7])return;
+      if(lg&&r[21]!==lg)return;
+      if(busca){
+        var sc=window.INTELI?INTELI.pontuar(campos(r),an):1;
+        if(sc<(an.temas.length?2:1))return;
+        r._sc=sc+(r[15]&&an.pir?3:0)+Math.log(1+r[1])/10;
+      }
+      filtrado.push(r);
     });
-    if(ordem==='p')filtrado.sort(function(a,b){return (b[6]||'').localeCompare(a[6]||'')});
+    if(busca)filtrado.sort(function(a,b){return b._sc-a._sc});
+    else if(ordem==='p')filtrado.sort(function(a,b){return (b[6]||'').localeCompare(a[6]||'')});
+    conta.hidden=!busca;
+    if(busca){
+      var np=filtrado.filter(function(r){return r[15]}).length;
+      conta.innerHTML='🔎 <b>'+filtrado.length+'</b> resultado(s) para “'+esc(q.value.trim())+'”'+
+        (an.temas.length?' — assunto: '+an.temas.map(function(t){return t.tit}).join(' + '):'')+
+        (np?' · <b>'+np+'</b> de pirataria/golpe/vírus (sem link)':'')+' · ordenado por relevância';
+    }
     desenha(true);
+    if(window.GLOS)GLOS.marcar(temaBox);
   }
   function grupoBotoes(sel,attr,cb){
     document.querySelectorAll(sel).forEach(function(b){
@@ -83,6 +109,7 @@
   window.addEventListener('hashchange',function(){if(/ocultos/.test(location.hash))soOcultos();});
   var t;q.addEventListener('input',function(){clearTimeout(t);t=setTimeout(filtra,150)});
   mais.addEventListener('click',function(){desenha(false)});
+  try{var qp=new URLSearchParams(location.search).get('q');if(qp)q.value=qp;}catch(e){}
   if(window.LISTA){dados=window.LISTA;filtra();return}
   fetch('lista.json').then(function(r){return r.json()}).then(function(d){dados=d;filtra()})
     .catch(function(){lst.innerHTML='<p class="nota">Não consegui carregar a lista.</p>'});

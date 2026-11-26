@@ -229,7 +229,7 @@ def curto(t):
 
 CSS = open(os.path.join(AQUI, 'estilo.css'), encoding='utf-8').read()
 TEMPO = open(os.path.join(AQUI, 'tempo.js'), encoding='utf-8').read()
-SJS = open(os.path.join(AQUI, 'selecao.js'), encoding='utf-8').read() + open(os.path.join(AQUI, 'glossario.js'), encoding='utf-8').read()
+SJS = open(os.path.join(AQUI, 'inteli.js'), encoding='utf-8').read() + open(os.path.join(AQUI, 'selecao.js'), encoding='utf-8').read() + open(os.path.join(AQUI, 'glossario.js'), encoding='utf-8').read()
 JS = TEMPO + SJS + open(os.path.join(AQUI, 'busca.js'), encoding='utf-8').read()
 
 TJS = open(os.path.join(AQUI, 'tinder.js'), encoding='utf-8').read()
@@ -261,7 +261,7 @@ PAG = """<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <title>{tit}</title><style>{css}</style></head><body>
 <div class="wrap">
 <header><h1>🎮 {h1}</h1><p class="sub">{sub}</p></header>
-<div class="pular"><input id="q" type="search" placeholder="Buscar ({ph})" autocomplete="off" aria-label="Buscar"><div class="pular-trilho">{nav}</div></div>
+<div class="pular"><input id="q" type="search" placeholder="🔎 Buscar assunto ou nome — ex.: catálogo, jogos piratas ({ph})" autocomplete="off" aria-label="Buscar"><div class="pular-trilho">{nav}</div></div>
 {corpo}<p id="nada" hidden>Nada encontrado.</p>
 </div>
 <footer>Levantamento de 26/11/2026 · estrelas do GitHub nessa data · <a href="#" onclick="scrollTo(0,0);return false">↑ topo</a></footer>
