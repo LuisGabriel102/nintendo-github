@@ -106,10 +106,55 @@ html,body{overflow-x:hidden}
 #m-txt:focus{outline:2px solid var(--accent);border-color:var(--accent)}
 .m-en{color:var(--muted);font-size:13px}
 .panel h2{font-size:20px}
+.card.oculto{border-style:dashed;background:var(--gray-bg)}
+.card.oculto.perigo{border-color:var(--veto);border-style:solid;background:var(--veto-bg)}
+.ocu-b{border-color:var(--gray);color:var(--gray);font-weight:600}
+.semlink{color:var(--ink);text-decoration:line-through dotted;text-decoration-thickness:1px}
+.ocu-m{font-size:14px!important}
+.risco{font-size:14px!important;padding:8px 10px;border-radius:9px;background:var(--veto-bg);border-left:3px solid var(--veto)}
+.risco b{color:var(--veto)}
+.barras{display:grid;gap:6px}
+.br{display:grid;grid-template-columns:minmax(80px,32%) 1fr auto;align-items:center;gap:8px;font-size:14px;padding:2px 0;cursor:default}
+.br-n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.br-t{display:block;height:14px;background:var(--gray-bg);border-radius:4px;overflow:hidden}
+.br-b{display:block;height:100%;background:var(--accent);border-radius:0 4px 4px 0}
+.br:hover .br-b,.br:active .br-b{filter:brightness(1.15)}
+.br:hover .br-n{font-weight:600}
+.br-v{font-variant-numeric:tabular-nums;font-weight:600;min-width:3.5em;text-align:right}
+.tab{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.tab table{border-collapse:collapse;width:100%;font-size:14px}
+.tab th{text-align:left;background:var(--gray-bg);font-weight:600;padding:8px 10px;white-space:nowrap}
+.tab td{padding:8px 10px;border-top:1px solid var(--line);vertical-align:top}
+.tab td:nth-child(3){font-variant-numeric:tabular-nums;white-space:nowrap}
+.lei{display:grid;gap:10px}
+.lei>div{border:1px solid var(--line);border-left:4px solid var(--veto);border-radius:10px;padding:10px 12px;background:var(--surface)}
+.lei h3{font-size:16px;margin-bottom:4px}
+.lei .pena{font-size:13px;color:var(--muted)}
+.difs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.dif{border:1px solid var(--line);border-top:5px solid var(--c);border-radius:12px;padding:12px 14px;display:grid;gap:6px;align-content:start;background:var(--surface)}
+.dif p{font-size:14px}
+.dif-t{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dif-t h3{font-size:18px;color:var(--c)}
+.dif-i{font-size:24px}
+.dif-n{margin-left:auto;font-size:12px;font-weight:700;color:var(--c);border:1px solid var(--c);border-radius:999px;padding:1px 8px}
+.d-pir{--c:var(--veto)}.d-gol{--c:var(--sua)}.d-mal{--c:var(--rom,#b4245f)}.d-ok{--c:var(--pt)}
+:root{--rom:#b4245f}@media (prefers-color-scheme:dark){:root{--rom:#ff8fbf}}
+.d-gol{--c:#b26b00}@media (prefers-color-scheme:dark){.d-gol{--c:#f2aa3f}}
+.susp-b{border-color:#b26b00;color:#b26b00;font-weight:600}
+@media (prefers-color-scheme:dark){.susp-b{border-color:#f2aa3f;color:#f2aa3f}}
+.ids{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;margin-top:6px}
+details summary{cursor:pointer;color:var(--blue);font-size:14px}
+.tp-pir{--tc:var(--veto)}.tp-gol{--tc:#b26b00}.tp-mal{--tc:var(--rom)}
+@media (prefers-color-scheme:dark){.tp-gol{--tc:#f2aa3f}}
+.b.tp-pir,.b.tp-gol,.b.tp-mal{border-color:var(--tc);background:var(--tc);color:#fff;font-weight:700}
+@media (prefers-color-scheme:dark){.b.tp-pir,.b.tp-gol,.b.tp-mal{color:#0b0f12}}
+.como{font-size:14px!important;padding:8px 10px;border-radius:9px;border-left:3px solid var(--tc,var(--line));background:var(--surface)}
+.como b{color:var(--tc,var(--ink))}
+h3.tp-h{color:var(--tc);font-size:19px;border-top:2px solid var(--tc);padding-top:12px;margin-top:14px}
 </style></head><body>
 <div class="wrap">
 <header><h1>🎮 Nintendo no GitHub</h1><p class="sub">309 projetos explicados em português, com exemplos e recomendações · mais de 2 mil na lista completa</p></header>
-<div class="pular"><input id="q" type="search" placeholder="Buscar (nome ou assunto)" autocomplete="off" aria-label="Buscar"><div class="pular-trilho"><a href="#tinder" id="t-abrir" class="lc">🃏 Modo Tinder</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="#comece">Comece</a><a href="#s0">Removidos</a><a href="#s1">Switch</a><a href="#s2">Nintendo 3DS</a><a href="#s3">Wii U</a><a href="#s4">Wii/GC</a><a href="#s5">DS</a><a href="#s6">Game Boy</a><a href="#s7">N64</a><a href="#s8">SNES/NES</a><a href="#s9">Decomp/ports</a><a href="#s10">Pokémon</a><a href="#s11">amiibo</a><a href="#s12">Multi</a><a href="#s13">Tradução</a><a href="lista.html" class="lc">Lista completa →</a></div></div>
+<div class="pular"><input id="q" type="search" placeholder="Buscar (nome ou assunto)" autocomplete="off" aria-label="Buscar"><div class="pular-trilho"><a href="#tinder" id="t-abrir" class="lc">🃏 Modo Tinder</a><a href="minha.html" class="lc">⭐ Minha seleção</a><a href="numeros.html" class="lc">📊 Números</a><a href="riscos.html" class="lc">⚖️ Riscos e lei</a><a href="#comece">Comece</a><a href="#s0">Removidos</a><a href="#s1">Switch</a><a href="#s2">Nintendo 3DS</a><a href="#s3">Wii U</a><a href="#s4">Wii/GC</a><a href="#s5">DS</a><a href="#s6">Game Boy</a><a href="#s7">N64</a><a href="#s8">SNES/NES</a><a href="#s9">Decomp/ports</a><a href="#s10">Pokémon</a><a href="#s11">amiibo</a><a href="#s12">Multi</a><a href="#s13">Tradução</a><a href="lista.html" class="lc">Lista completa →</a></div></div>
 <div class="tiles"><a class="tile c0" href="#s0"><span class="num">8</span><span class="lbl">Removidos</span><span class="dsc">saíram do GitHub</span></a><a class="tile c1" href="#s1"><span class="num">95</span><span class="lbl">Switch</span><span class="dsc">CFW, homebrew, tradução</span></a><a class="tile c2" href="#s2"><span class="num">25</span><span class="lbl">Nintendo 3DS</span><span class="dsc"></span></a><a class="tile c3" href="#s3"><span class="num">15</span><span class="lbl">Wii U</span><span class="dsc">Cemu, Aroma, Pretendo</span></a><a class="tile c4" href="#s4"><span class="num">18</span><span class="lbl">Wii/GC</span><span class="dsc">Dolphin, Homebrew Channel</span></a><a class="tile c5" href="#s5"><span class="num">18</span><span class="lbl">DS</span><span class="dsc">melonDS, TWiLight</span></a><a class="tile c6" href="#s6"><span class="num">23</span><span class="lbl">Game Boy</span><span class="dsc">mGBA, SameBoy, dev</span></a><a class="tile c0" href="#s7"><span class="num">12</span><span class="lbl">N64</span><span class="dsc">emuladores e recomp</span></a><a class="tile c1" href="#s8"><span class="num">23</span><span class="lbl">SNES/NES</span><span class="dsc">Snes9x, Mesen, FCEUX</span></a><a class="tile c2" href="#s9"><span class="num">23</span><span class="lbl">Decomp/ports</span><span class="dsc">Zelda, Mario no PC</span></a><a class="tile c3" href="#s10"><span class="num">28</span><span class="lbl">Pokémon</span><span class="dsc">PKHeX, pret, PokeAPI</span></a><a class="tile c4" href="#s11"><span class="num">7</span><span class="lbl">amiibo</span><span class="dsc">TagMo, bancos</span></a><a class="tile c5" href="#s12"><span class="num">14</span><span class="lbl">Multi</span><span class="dsc">RetroArch e cia.</span></a><a class="tile c6" href="#s13"><span class="num">✓</span><span class="lbl">Tradução</span><span class="dsc">o que usar</span></a></div><details class="sec" id="comece" open data-g=""><summary><span class="dot" style="--c:var(--accent)"></span><h2>Comece aqui</h2></summary><div class="in">
 <p>Este guia junta os projetos ligados à Nintendo que existem no GitHub — do Switch ao NES — explicando <b>para que serve cada um</b>, com <b>exemplos</b> e <b>recomendações</b>. Os cards com borda verde são os recomendados.</p>
 <div class="dicas">
@@ -416,6 +461,7 @@ document.addEventListener("DOMContentLoaded", function () { window.preencherQuan
   function daLista(cb) {
     if (cacheLista) return cb(cacheLista);
     fetch("lista.json").then(function (r) { return r.json(); }).then(function (d) {
+      d = d.filter(function (r) { return !r[10]; });
       var gs = []; cacheLista = d.map(function (r) {
         if (gs.indexOf(r[3]) < 0) gs.push(r[3]);
         return { capa: r[9] || "", p: r[6] || "", rel: r[7] || "", relt: r[8] || "", repo: r[0], f: esc(r[5] || autoForte(r)), n: r[0], u: "https://github.com/" + r[0], h: "", d: esc(r[4] || "(sem descrição)"), g: r[3], sub: "", e: String(r[1]), r: false, arq: !!r[2], cor: gs.indexOf(r[3]) };

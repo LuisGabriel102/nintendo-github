@@ -104,6 +104,7 @@
   function daLista(cb) {
     if (cacheLista) return cb(cacheLista);
     fetch("lista.json").then(function (r) { return r.json(); }).then(function (d) {
+      d = d.filter(function (r) { return !r[10]; });
       var gs = []; cacheLista = d.map(function (r) {
         if (gs.indexOf(r[3]) < 0) gs.push(r[3]);
         return { capa: r[9] || "", p: r[6] || "", rel: r[7] || "", relt: r[8] || "", repo: r[0], f: esc(r[5] || autoForte(r)), n: r[0], u: "https://github.com/" + r[0], h: "", d: esc(r[4] || "(sem descrição)"), g: r[3], sub: "", e: String(r[1]), r: false, arq: !!r[2], cor: gs.indexOf(r[3]) };
